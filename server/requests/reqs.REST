@@ -1,0 +1,71 @@
+POST http://localhost:3001/api/blogs
+content-type: application/json
+
+{
+   "title": "blerg",
+   "author": "grug",
+   "url": "grug.ru/blerg",
+   "likes": "2" 
+}
+###
+GET http://localhost:3003/api/blogs/
+###
+GET http://localhost:3003/api/blogs/638a662f992db3600eeaf902
+
+###
+DELETE http://localhost:3003/api/blogs/6332243a2d6c67e1d3349af0 HTTP/1.1
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNvc28iLCJpZCI6IjYzNjU2MDZlMzVmZWUzZTg0ZDk0MzJhMSIsImlhdCI6MTY2Nzg2MDc1OX0.YgolFL19Cf073lM3pHltTYShcadB7wWcHckjli4MoAY
+###
+GET http://localhost:3001/api/users/633216fe41c3fbad102cc98a HTTP/1.1
+###
+GET http://localhost:3001/api/users/ HTTP/1.1
+
+###
+POST http://localhost:3003/api/users
+content-type: application/json
+
+{
+   "name":"noo",
+   "username":"noo",
+   "password":"noo"
+
+}
+###
+POST http://localhost:3003/api/blogs
+content-type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNvc28iLCJpZCI6IjYzNjk4NWE5MDc4ZTJmOTBlN2U3NmZkNCIsImlhdCI6MTY2OTk1MzE0OX0.bpJ8RNSJ2EQiLMX6-vmwC2bYJwPQdxYzx_rI9HcgzMY
+
+{
+   "title": "dore",
+    "author": "dore",
+    "url": "http://dore.com",
+    "likes": 1,
+    "comments":["kia kaia", "rero rera"]
+}
+
+###
+PATCH http://localhost:3001/api/users/6312294790b98fb8ff0121e0
+content-type: application/json
+
+{ "newBlog": "6312294790b98fb8ff0121e0" }
+###
+POST http://localhost:3003/api/users/
+content-type: application/json
+
+{
+   "name":"keso",
+   "username":"keso",
+   "password":"keso"
+}
+###
+POST http://localhost:3003/api/testing/reset
+###
+GET http://localhost:3003/api/blogs
+###
+POST http://localhost:3003/api/blogs/638a662f992db3600eeaf902/comments
+content-type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNvc28iLCJpZCI6IjYzNjk4NWE5MDc4ZTJmOTBlN2U3NmZkNCIsImlhdCI6MTY2OTk1MzE0OX0.bpJ8RNSJ2EQiLMX6-vmwC2bYJwPQdxYzx_rI9HcgzMY
+
+[
+   "asassasaasass"
+]
