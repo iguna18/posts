@@ -5,7 +5,7 @@ const usersRouter = require('express').Router()
 usersRouter.patch('/:id', async (req, res) => {
   const user = await User.findById(req.params.id)
   if (user) {
-    user.blogs = user.blogs.concat(req.body.newBlog)
+    user.blogs = user.blogs.concat(req.body.newBlog) //user.blog_ids instead!!
     const result = await user.save()
     res.json(result)
   } else {

@@ -16,6 +16,7 @@ export const createBlog = (title, author, url) => async (dispatch) => {
   const newBlog = await blogsService.create({ title, author, url })
   // newBlog returned from server has 'id' and 'likes' fields too
   dispatch(addBlog(newBlog))
+  dispatch(setNotification('New post added'))
 }
 
 export const likeBlog = (blog) => async (dispatch, getState) => {

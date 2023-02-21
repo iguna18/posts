@@ -7,19 +7,22 @@ import { setNotification } from '../reducers/thunks'
 import { useDispatch } from 'react-redux'
 import { setUser } from '../reducers/userSlice'
 import { useNavigate } from 'react-router-dom'
+import RegistrationForm from './RegistrationForm'
+import userService from '../services/users'
 
 const LoginPage = () => {
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
+
   const LogIn = (username, password) => {
     loginService
       .login(username, password)
-      .then(retrievedUsed => {
+      .then(retrievedUser => {
         window.localStorage.setItem(
-          'loggedBlogappUser', JSON.stringify(retrievedUsed))
-        dispatch(setUser(retrievedUsed))
-        blogService.setToken(retrievedUsed.token)
+          'loggedBlogappUser', JSON.stringify(retrievedUser))
+        dispatch(setUser(retrievedUser))
+        blogService.setToken(retrievedUser.token)
         dispatch(setNotification('logged in'))
         navigate('/blogs')
       })
@@ -28,12 +31,23 @@ const LoginPage = () => {
       })
   }
 
+  const register = (username, name, password) => {
+    userService
+      .addUser(username,name,password)
+      .then((resData => {
+        dispatch(setNotification('added new user'))
+      })).catch(err => {
+        dispatch(setNotification(err.message))
+      })
+  }
+
   return (
     <div>
       <h2>log in to application</h2>
       <Message/>
-      <Togglable buttonLabel='login'>
-        <LoginForm loginFunction={LogIn} />
+      <LoginForm loginFunction={LogIn} />
+      <Togglable buttonLabel='registration'>
+        <RegistrationForm registrationFunction={register}/>
       </Togglable>
     </div>
   )

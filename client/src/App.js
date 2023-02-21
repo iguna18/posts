@@ -23,8 +23,11 @@ const App = () => {
     width: '80%',
     maxWidth: '500px',
     padding: '30px',
-    backgroundColor: 'lightgray',
-    textAlign: 'center'  
+    backgroundImage: 'linear-gradient(purple, blue)',
+    textAlign: 'center',
+    height:'100vh',
+    display:'grid',
+    alignItems:'center'
   }
 
   return (

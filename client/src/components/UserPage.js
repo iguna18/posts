@@ -124,6 +124,7 @@ const UserPage = () => {
   let blogsCopy = [...blogs]
   return (
     <div >
+      <Message/>
       <div style={{backgroundColor:'red', color:'green'}}>
         <h2 >blog app</h2>
       </div>
@@ -133,7 +134,6 @@ const UserPage = () => {
         <span style={{fontSize:'0.9em', fontStyle: 'italic'}}>currently logged in user: </span>{user.name}
         <button onClick = {onLogOut}>log out</button>        
       </nav>
-        <Message/>
       <Routes>
         <Route path='/blogs' element={ // blogs view
           <div>
