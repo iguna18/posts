@@ -6,3 +6,23 @@ content-type: application/json
    "username":"Ko777Ka",
    "password":"pwshiu"
 }
+###
+GET http://localhost:3005/api/users/
+###
+POST http://localhost:3005/api/users/follow/
+content-type: application/json
+
+{
+   "from":"63d81868625fd003f2021bee",
+   "to":"63f67d9c19f5ec557fdb0946"
+}
+###
+PATCH http://localhost:3005/api/users/63d81868625fd003f2021bee
+content-type: application/json
+
+{
+   "field":"following_ids",
+   "value":[
+      "63f67d9c19f5ec557fdb0946"
+   ]
+}

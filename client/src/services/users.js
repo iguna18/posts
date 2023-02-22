@@ -22,9 +22,11 @@ const addUser = (username, name, password) => {
 }
 
 const addFollow = (from, to) => {
-  // return (
-
-  // )
+  return (
+    axios
+      .post(`${baseUrl}/follow`, {from, to})
+      .then(response => response.data)
+  )
 }
 
-export default { getAll, addUser }
+export default { getAll, addUser, addFollow }

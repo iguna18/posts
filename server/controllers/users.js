@@ -5,7 +5,8 @@ const usersRouter = require('express').Router()
 usersRouter.patch('/:id', async (req, res) => {
   const user = await User.findById(req.params.id)
   if (user) {
-    user.blogs = user.blogs.concat(req.body.newBlog) //user.blog_ids instead!!
+    const {field,value} = req.body
+    user[field] = value 
     const result = await user.save()
     res.json(result)
   } else {
@@ -48,6 +49,24 @@ usersRouter.post('/', async (req, res) => {
   const passwordHash = await hashPassword(password)
   const result = await saveUser(username, name, passwordHash)
   res.status(201).json(result)
+})
+
+usersRouter.post('/follow', async (req, res) => {
+  const {from, to} = req.body
+  const userFrom = await User.findById(from)
+  const userTo = await User.findById(to)
+  if(!userFrom || !userTo){
+    res.status(404).end()
+    return
+  }
+  if(!userFrom.following_ids.find(to))
+    userFrom.following_ids = userFrom.following_ids.concat(to)
+  
+  if(!userTo.following_ids.find(from))
+    userTo.follower_ids = userTo.follower_ids.concat(from)  
+  const resultFrom = await userFrom.save()
+  const resultTo = await userTo.save()
+  res.status(201).json({from:resultFrom, to:resultTo})
 })
 
 module.exports = usersRouter

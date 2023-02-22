@@ -67,7 +67,6 @@ blogsRouter.get('/:id', async (request, response) => {
 })
 
 blogsRouter.post('/:id/comments', middleware.userExtractor, async (request, response, next) => {
-  console.log('aqanato', request.body);
   const blog = await Blog.findById(request.params.id)
   if(!blog) 
     return response.status(404).send({error:"blog not found"})
@@ -76,7 +75,6 @@ blogsRouter.post('/:id/comments', middleware.userExtractor, async (request, resp
   const commentId = Math.floor(Math.random() * 10000)
   try {
     blog.comments = blog.comments.concat({text:request.body.comment, id:commentId})
-    console.log('dziakavo');
     blog.save()
   } catch(e) {
     return response.status(501).end(e.message)
