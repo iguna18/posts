@@ -53,21 +53,40 @@ usersRouter.post('/', async (req, res) => {
 
 usersRouter.post('/follow', async (req, res) => {
   const {from, to} = req.body
+
   const userFrom = await User.findById(from)
   const userTo = await User.findById(to)
   if(!userFrom || !userTo){
     res.status(404).end()
     return
   }
-  if(!userFrom.following_ids.find(to))
+  if(!userFrom.following_ids.find(f=>f==to))
     userFrom.following_ids = userFrom.following_ids.concat(to)
   
-  if(!userTo.following_ids.find(from))
+  if(!userTo.follower_ids.find(f=>f==from))
     userTo.follower_ids = userTo.follower_ids.concat(from)  
+  
   const resultFrom = await userFrom.save()
   const resultTo = await userTo.save()
   res.status(201).json({from:resultFrom, to:resultTo})
 })
+
+usersRouter.post('/unfollow', async (req, res) => {
+  const {from, to} = req.body
+  const userFrom = await User.findById(from)
+  const userTo = await User.findById(to)
+  if(!userFrom || !userTo){
+    res.status(404).end()
+    return
+  }
+  userFrom.following_ids = userFrom.following_ids.filter(id => id!=to)
+  userTo.follower_ids = userTo.follower_ids.filter(id => id!=from)  
+  
+  const resultFrom = await userFrom.save()
+  const resultTo = await userTo.save()
+  res.status(201).json({from:resultFrom, to:resultTo})
+})
+
 
 module.exports = usersRouter
 

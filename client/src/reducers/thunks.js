@@ -1,5 +1,5 @@
 import { addBlog, setBlogs, updateBlog } from "./blogsSlice"
-import { setUsers } from "./usersSlice"
+import { addBlogToUser, setUserField, setUsers } from "./usersSlice"
 import { setMessage } from "./messageSlice"
 import blogsService from "../services/blogs"
 import usersService from "../services/users"
@@ -12,10 +12,11 @@ export const setNotification = (text) => (dispatch) => {
     }, 5000)
 }
 
-export const createBlog = (title, author, url) => async (dispatch) => {
+export const createBlog = (title, author, url, userId) => async (dispatch) => {
   const newBlog = await blogsService.create({ title, author, url })
   // newBlog returned from server has 'id' and 'likes' fields too
   dispatch(addBlog(newBlog))
+  dispatch(addBlogToUser({newBlog}))
   dispatch(setNotification('New post added'))
 }
 

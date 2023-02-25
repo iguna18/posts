@@ -3,7 +3,7 @@ import MyInput from './MyInput'
 import {createBlog} from '../reducers/thunks'
 import { useDispatch } from 'react-redux'
 
-const CreateNewBlog = () => {
+const CreateNewBlog = ({user}) => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
@@ -11,7 +11,7 @@ const CreateNewBlog = () => {
   const dispatch = useDispatch()
   const handleCreate = (event) => {
     event.preventDefault()
-    dispatch(createBlog(title, author, url))
+    dispatch(createBlog(title, author, url, user.id))
     setTitle('')
     setAuthor('')
     setUrl('')

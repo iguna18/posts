@@ -20,18 +20,14 @@ const App = () => {
   }, [])
 
   const style = {
-    width: '80%',
-    maxWidth: '500px',
-    padding: '30px',
+    width: '100%',
+    // maxWidth: '500px',
     backgroundImage: 'linear-gradient(purple, blue)',
-    textAlign: 'center',
     height:'100vh',
-    display:'grid',
-    alignItems:'center'
   }
 
   return (
-    <div className="container" style={style}>
+    <div style={style}>
       {user != null ? <UserPage/> : <LoginPage/>}
     </div>
   )

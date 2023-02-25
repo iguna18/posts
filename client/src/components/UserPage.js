@@ -1,67 +1,28 @@
 import { useEffect } from 'react'
-import Blog from './Blog'
-import CreateNewBlog from './CreateNewBlog'
 import Message from './Message'
-import Togglable from './Togglable'
 import { useSelector, useDispatch } from 'react-redux'
 import {likeBlog, setNotification, deleteBlog,initializeBlogs, initializeUsers, newComment} from '../reducers/thunks'
 import { setUser } from '../reducers/userSlice'
 import {
   Routes, Route, Link, useMatch 
 } from "react-router-dom"
-import { Table } from 'react-bootstrap'
+import { UsersView } from './UsersView'
+import { BlogsView } from './BlogsView'
+import { SingleBlog } from './SingleBlog'
+import { SingleUser } from './SingleUser'
+import styled from 'styled-components'
 
-const SingleUser = ({userToShow}) => {
-  if(!userToShow)
-    return (
-      <div></div>
-    )
-  return (
-    <div>
-      <h3><span style={{fontSize:'0.7em', fontStyle: 'italic'}}>user: </span>{userToShow.name}</h3>
-      <h3><span style={{fontSize:'0.7em', fontStyle: 'italic'}}>added blogs:</span></h3>
-      <ul>
-      {
-        userToShow.blog_ids.map(b => {
-          return (
-            <li key = {b.id}>
-              {b.title}
-            </li>
-          )
-        })
-      }
-      </ul>
-  </div>
-  )
-}
-
-const SingleBlog = ({blogToShow, addLike, addComment}) => {
-  if(!blogToShow)
-    return (
-      <div></div>
-    )
-  return (
-    <div>
-      <h3>{blogToShow.title}</h3>
-      <a href={blogToShow.url}>{blogToShow.url}</a>
-      <p>{blogToShow.likes} likes</p>
-      <p>added by @{blogToShow.user_id.username}</p>
-      <button onClick={addLike(blogToShow)}>like</button>
-      <h5>comments</h5>
-      <form onSubmit={addComment}>
-        <input name='inp'></input>
-        <button>add comment</button>
-      </form>
-      <ul style = {{textAlign:'left'}}>
-        {
-          blogToShow.comments.map(c => {
-            return <li key={c.id}>{c.text}</li>
-          })
-        }
-      </ul>
-  </div>
-  )
-}
+const Navigation = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+`
+const Div = styled.div`
+  /* row-gap:0px;
+  display: flex;
+  flex-direction: column;
+  background-color: red; */
+`
 
 const UserPage = () => {
   const dispatch = useDispatch()
@@ -107,13 +68,6 @@ const UserPage = () => {
     dispatch(setNotification(`added comment ${c} to blog ${blogToShow.title}`))
   }
 
-  const blogStyle = {
-    paddingTop: 10,
-    paddingLeft: 2,
-    border: 'solid',
-    borderWidth: 1,
-    marginBottom: 5
-  }
   
   let match = useMatch('/users/:id')
   const userToShow = match ? users.find(u => u.id === match.params.id) : null
@@ -123,78 +77,36 @@ const UserPage = () => {
   // we want to sort the array for the view so we copy it due to its immutability
   let blogsCopy = [...blogs]
   return (
-    <div >
+    <Div>
       <Message/>
-      <div style={{backgroundColor:'red', color:'green'}}>
-        <h2 >blog app</h2>
-      </div>
-      <nav>
-        <Link style={{marginRight:'5px'}} to='/blogs'>blogs</Link>
-        <Link to='/users'>users </Link> <br/>
-        <span style={{fontSize:'0.9em', fontStyle: 'italic'}}>currently logged in user: </span>{user.name}
-        <button onClick = {onLogOut}>log out</button>        
-      </nav>
+      <Navigation>
+        <div>
+          <Link style={{marginRight:'5px'}} to='/blogs'>blogs</Link>
+          <Link to='/users'>users </Link> 
+        </div>
+        <div>
+          <span>{user.name} </span>
+          <img src='/logo192.png' style={{height:'10%'}}/>
+          <button onClick = {onLogOut}>log out</button>        
+        </div>
+      </Navigation>
       <Routes>
         <Route path='/blogs' element={ // blogs view
-          <div>
-            <h3>Blogs</h3>
-            <Togglable buttonLabel='new blog' >
-              <CreateNewBlog />
-            </Togglable>
-            <ul>
-              {
-                blogsCopy
-                  .sort((a, b) => b.likes - a.likes)
-                  .map(blog => {
-                    return (
-                      <Blog key={blog.id} 
-                        blog={blog} blogStyle={blogStyle}
-                        addLike={addLike} removeBlog={removeBlog}
-                        isCreatedByCurrentUser={blog.user_id.username === user.username}/>
-                    )
-                  })
-              }
-            </ul>
-          </div>
+          <BlogsView addLike={addLike} removeBlog={removeBlog} blogsCopy={blogsCopy}
+            user = {user}/>
         } />
         <Route path='/users' element={ // users view
-          <div>
-            <h3>Users</h3>
-            <Table striped>
-              <thead>
-                <tr>
-                  <th> </th>
-                  <th>blogs created</th>
-                </tr>
-              </thead>
-              <tbody>
-                {
-                  users.map(u => {
-                    return (
-                      <tr key={u.id}>
-                        <td>
-                          <Link to={`/users/${u.id}`}>{u.name}</Link>
-                        </td>
-                        <td>
-                          {u.blog_ids.length}
-                        </td>
-                      </tr>
-                    )
-                  })
-                }
-              </tbody>
-            </Table>
-          </div>
+          <UsersView users={users}/>
         } />
         <Route path='/users/:id' element={
-          <SingleUser userToShow={userToShow}/>
+          <SingleUser userToShow={userToShow} loggedUser={user}/>
         }/>
         <Route path='/blogs/:id' element={
           <SingleBlog blogToShow={blogToShow} addLike={addLike} addComment={addComment}/>
         }/>
       </Routes>
 
-    </div>
+    </Div>
   )
 }
 export default UserPage

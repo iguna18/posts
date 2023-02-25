@@ -29,4 +29,12 @@ const addFollow = (from, to) => {
   )
 }
 
-export default { getAll, addUser, addFollow }
+const removeFollow = (from,to) => {
+  return (
+    axios
+      .post(`${baseUrl}/unfollow`, {from, to})
+      .then(response => response.data)
+  )
+}
+
+export default { getAll, addUser, addFollow, removeFollow }

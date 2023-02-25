@@ -19,7 +19,6 @@ blogsRouter.post('/', middleware.userExtractor, async (request, response) => {
   if(!user) {
     return response.status(401).end({error:"token in correct format but the passed id deosnt belong to any user (expired token?)"})
   }
-  console.log('eger',request.body);
   if(!request.body.comments)
     request.body.comments = []
   
