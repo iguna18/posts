@@ -33,6 +33,11 @@ const UserPage = () => {
   },[])
 
   const user = useSelector(state => state.user)
+  const loggedUserId = useSelector(state => {
+    const userObj = state.users.find(u => u.username == user.username)
+    if(userObj) return userObj.id
+  })
+  
   const blogs = useSelector(state => state.blogs)
   useEffect(()=>{
       dispatch(initializeBlogs())
@@ -99,10 +104,11 @@ const UserPage = () => {
           <UsersView users={users}/>
         } />
         <Route path='/users/:id' element={
-          <SingleUser userToShow={userToShow} loggedUser={user}/>
+          <SingleUser userToShow={userToShow} loggedUserId={loggedUserId}/>
         }/>
         <Route path='/blogs/:id' element={
-          <SingleBlog blogToShow={blogToShow} addLike={addLike} addComment={addComment}/>
+          <SingleBlog blogToShow={blogToShow} addLike={addLike} addComment={addComment}
+            loggedUserId={loggedUserId}/>
         }/>
       </Routes>
 

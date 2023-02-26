@@ -57,4 +57,15 @@ const addComment = (blog_id, comment) => {
   )
 }
 
-export default { getAll, create, setToken, increaseLike, removeOne, addComment}
+const toggleCommentLike = (blogid, commentid) => {
+  const config = {
+    headers: { Authorization:token }
+  }
+  return (
+    axios
+      .post(`${baseUrl}/${blogid}/comments/${commentid}/like`, {}, config)
+      .then(response => response.data)
+  )
+}
+
+export default { getAll, create, setToken, increaseLike, removeOne, addComment, toggleCommentLike}

@@ -20,9 +20,24 @@ const blogSchema = new mongoose.Schema({
     text:{
       type:String
     },
+    parentCommentId:{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Comment'
+    },
+    // creationDate:{
+    //   type: Date,
+    //   required: true,
+    //   default:0
+    // },
     id:{
       type:Number
-    }
+    },
+    likers: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+      }
+    ]
   }
   ]
 })

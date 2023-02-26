@@ -70,8 +70,8 @@ blogsRouter.post('/:id/comments', middleware.userExtractor, async (request, resp
   if(!blog) 
     return response.status(404).send({error:"blog not found"})
 
-  // Returns a random integer from 0 to 100:
-  const commentId = Math.floor(Math.random() * 10000)
+  // Returns a random integer from 0 to 100000:
+  const commentId = Math.floor(Math.random() * 100000)
   try {
     blog.comments = blog.comments.concat({text:request.body.comment, id:commentId})
     blog.save()
@@ -85,6 +85,45 @@ blogsRouter.get('/:id', async (request, response) => {
   const blog = await Blog.findById(request.params.id)
   if (blog) {
     response.json(blog)
+  } else {
+    response.status(404).end()
+  }
+})
+
+blogsRouter.get('/:blogid/comments/:commentid', async (request, response) => {
+  const blogid = request.params.blogid
+  const commentid = request.params.commentid
+  const blog = await Blog.findById(blogid)
+  if(blog) {
+    const com = blog.comments.find(c => c.id == commentid)
+    if(com) {
+      response.json(com)
+    } else {
+      response.status(404).end()
+    }
+  } else {
+    response.status(404).end()
+  }
+})
+// toggle like to a comment  (add logged in user id to the comment's "likers" field, or remove from it)
+blogsRouter.post('/:blogid/comments/:commentid/like', middleware.userExtractor, async (request, response) => {
+  const blogid = request.params.blogid
+  const commentid = request.params.commentid
+  const user_id = request.user_id
+  const blog = await Blog.findById(blogid)
+  if(blog) {
+    const theComment = blog.comments.find(c => c.id == commentid)
+    if(!theComment) {
+      return response.status(404).end()
+    }
+    const hasLiked = theComment.likers.find(uid => uid == user_id)
+    if(!hasLiked) {
+      theComment.likers = theComment.likers.concat(user_id)
+    } else {
+      theComment.likers = theComment.likers.filter(uid => uid != user_id)
+    }
+    await blog.save()
+    return response.json(theComment)
   } else {
     response.status(404).end()
   }
@@ -105,5 +144,7 @@ blogsRouter.put('/:id', middleware.userExtractor, async (request, response, next
   const ret = await Blog.findByIdAndUpdate(blogFromClient.id, blogFromClient, {new:true}).populate('user_id')
   response.status(200).send(ret)
 })
+
+
 
 module.exports = blogsRouter

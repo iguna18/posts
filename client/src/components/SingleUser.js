@@ -3,12 +3,9 @@ import { setNotification } from "../reducers/thunks"
 import { addFollow, removeFollow } from "../reducers/usersSlice"
 import usersService from '../services/users'
 
-export const SingleUser = ({userToShow, loggedUser}) => {
+export const SingleUser = ({userToShow, loggedUserId}) => {
   const dispatch = useDispatch()
-  const loggedUserId = useSelector(state => {
-    return state.users.find(u => u.username == loggedUser.username).id
-  })
-  
+
   const followState = useSelector(state => {
     return (
       state.users.find(u => u.id == userToShow.id).follower_ids.some(f => f == loggedUserId)
@@ -31,9 +28,9 @@ export const SingleUser = ({userToShow, loggedUser}) => {
     .then(data => {
       dispatch(removeFollow({fromId:loggedUserId, toId:userToShow.id}))
     })
-    // .catch(err => {
-      // dispatch(setNotification(err.message))
-    // })
+    .catch(err => {
+      dispatch(setNotification(err.message))
+    })
   }
 
   if(!userToShow)
@@ -44,9 +41,13 @@ export const SingleUser = ({userToShow, loggedUser}) => {
     <div>
       <h3><span style={{fontSize:'0.7em', fontStyle: 'italic'}}>user: </span>{userToShow.name}</h3>
       <div>
-        <button onClick={handleFollow}>
-          {followState ? 'unfollow' : 'follow'}
-        </button>
+        {
+          userToShow.id != loggedUserId ?
+            <button onClick={handleFollow}>
+              {followState ? 'unfollow' : 'follow'}
+            </button>
+          : null
+        }
       </div>
       <h3><span style={{fontSize:'0.7em', fontStyle: 'italic'}}>added blogs:</span></h3>
       <ul>

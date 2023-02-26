@@ -1,13 +1,13 @@
 ###
-POST http://localhost:3001/api/login/
+POST http://localhost:3005/api/login/
 content-type: application/json
 
 {
-   "username":"Ko777Ka",
-   "password":"pwshiu"
+   "username":"vaso",
+   "password":"vaso"
 }
 ###
-GET http://localhost:3005/api/users/
+GET http://localhost:3005/api/blogs/
 ###
 POST http://localhost:3005/api/users/follow/
 content-type: application/json
@@ -26,3 +26,9 @@ content-type: application/json
        "63f47d87fcf913001f1440c0"
    ]
 }
+###
+POST http://localhost:3005/api/blogs/63d81790625fd003f2021bd8/comments/7716/like
+content-type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InZhc28iLCJpZCI6IjYzZjY3ZDljMTlmNWVjNTU3ZmRiMDk0NiIsImlhdCI6MTY3NzM0MDE4Nn0.WEOtoUR7JuVtIj0CBe0Y7zDh3M7v8eLJfBJUaTMEvmc
+
+{}

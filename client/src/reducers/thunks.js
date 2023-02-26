@@ -68,3 +68,22 @@ export const newComment = (blog, comment) => async (dispatch, getState) => {
     dispatch(setNotification(error.message))
   }
 }
+
+export const toggleCommentLike = (blogid, commentid, userid) => async (dispatch, getState) => {
+  try {
+    await blogsService.toggleCommentLike(blogid, commentid)
+    let theBlog = getState().blogs.find(b=>b.id == blogid)
+    theBlog = cloneDeep(theBlog)
+    const commentInState = theBlog.comments.find(c => c.id == commentid)
+    const hasLiked = commentInState.likers.find(uid => uid == userid)
+    if(hasLiked) {
+      commentInState.likers = commentInState.likers.filter(uid => uid != userid)
+    } else {
+      commentInState.likers.push(userid)
+    }
+    dispatch(updateBlog(theBlog))
+    dispatch(setNotification(`toggled like from user ${userid} to comment ${commentid} on blog ${blogid}`))
+  } catch (error) {
+    dispatch(setNotification(error.message))
+  }
+}
