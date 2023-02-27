@@ -66,19 +66,19 @@ const UserPage = () => {
     } 
   }
 
+  
+  
+  let match = useMatch('/users/:id')
+  const userToShow = match ? users.find(u => u.id === match.params.id) : null
+  match = useMatch('/blogs/:id')
+  const blogToShow = match ? blogs.find(b => b.id === match.params.id) : null
+  
   const addComment = (parentCommentId) => (e) => {
     e.preventDefault()
     const c = e.target.inp.value
     dispatch(newComment(blogToShow, c, parentCommentId))
     dispatch(setNotification(`added comment ${c} to blog ${blogToShow.title}`))
   }
-
-  
-  let match = useMatch('/users/:id')
-  const userToShow = match ? users.find(u => u.id === match.params.id) : null
-  match = useMatch('/blogs/:id')
-  const blogToShow = match ? blogs.find(b => b.id === match.params.id) : null
-
   // we want to sort the array for the view so we copy it due to its immutability
   let blogsCopy = [...blogs]
   return (

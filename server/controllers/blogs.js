@@ -79,8 +79,11 @@ blogsRouter.post('/:id/comments', middleware.userExtractor, async (request, resp
       creationDate:new Date(),
       parentCommentId:request.body.parentCommentId
     })
+
     //find the parent comment and add the new comment id to its childrens
-    blog.comments.find(c => c.id == request.body.parentCommentId).childCommentIds.push(commentId)
+    if(request.body.parentCommentId) {
+      blog.comments.find(c => c.id == request.body.parentCommentId).childCommentIds.push(commentId)
+    }
     blog.save()
 
     return response.json(blog.comments.find(c => c.id == commentId))

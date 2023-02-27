@@ -63,6 +63,9 @@ export const newComment = (blog, comment, parentCommentId) => async (dispatch, g
     let theBlog = getState().blogs.find(b=>b.id == blog.id)
     theBlog = cloneDeep(theBlog)
     theBlog.comments.push(commentObj)
+    if(parentCommentId) {
+      theBlog.comments.find(c => c.id == parentCommentId).childCommentIds.push(commentObj.id)
+    }
     dispatch(updateBlog(theBlog))
   } catch (error) {
     console.log(error);

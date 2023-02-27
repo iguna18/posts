@@ -22,7 +22,7 @@ const App = () => {
   const style = {
     width: '100%',
     // maxWidth: '500px',
-    backgroundImage: 'linear-gradient(purple, blue)',
+    // backgroundImage: 'linear-gradient(purple, blue)',
     height:'100vh',
   }
 
