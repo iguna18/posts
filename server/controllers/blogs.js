@@ -11,7 +11,7 @@ blogsRouter.get('/', async (request, response) => {
 
 blogsRouter.post('/', middleware.userExtractor, async (request, response) => {
   request.body.user_id = request.user_id
-  if(!request.body.title && !request.body.url) {
+  if(!request.body.text) {
     response.status(400).end()
     return
   }

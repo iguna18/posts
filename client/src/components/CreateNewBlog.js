@@ -4,29 +4,20 @@ import {createBlog} from '../reducers/thunks'
 import { useDispatch } from 'react-redux'
 
 const CreateNewBlog = ({user}) => {
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
+  const [text, setText] = useState('')
 
   const dispatch = useDispatch()
   const handleCreate = (event) => {
     event.preventDefault()
-    dispatch(createBlog(title, author, url, user.id))
-    setTitle('')
-    setAuthor('')
-    setUrl('')
+    dispatch(createBlog(text))
+    setText('')
   }
 
   return (
     <div >
       <h3>create new</h3>
       <form onSubmit = {handleCreate}>
-        title <MyInput value={title} setValue={setTitle}/>
-        <br/>
-        author <MyInput value={author} setValue={setAuthor}/>
-        <br/>
-        url <MyInput value={url} setValue={setUrl}/>
-        <br/>
+        <textarea value={text} onChange={e => setText(e.target.value)}/>
         <button id='createbutton'>create</button>
       </form>
     </div>

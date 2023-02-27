@@ -36,7 +36,7 @@ const Comment = ({comment, loggedUserId, blog, dispatch, addComment}) => {
           }}>reply</span>
           <span onClick={() => 
             dispatch(toggleCommentLike(blogid, comment.id, loggedUserId))}>
-            { userLikesComment ? 'unlike' : 'like' }
+            { userLikesComment ? 'unlike' : 'like' } 
           </span>
           <span onClick={onClickLikes}>{likesNumber} likes</span>
           <span>{new Date(comment.creationDate).toLocaleString('en-UK')}</span>
@@ -75,7 +75,9 @@ export const SingleBlog = ({blogToShow, addLike, addComment, loggedUserId}) => {
   return (
     <div>
       <h3>{blogToShow.title}</h3>
-      <a href={blogToShow.url}>{blogToShow.url}</a>
+      <p>
+        {blogToShow.text}
+      </p>
       <p>{blogToShow.likes} likes</p>
       <p>added by <Link to={`/users/${blogToShow.user_id.id}`}>
         @{blogToShow.user_id.username}</Link></p>

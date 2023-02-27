@@ -12,7 +12,7 @@ const Blog = ({ blog, blogStyle, addLike, removeBlog, isCreatedByCurrentUser }) 
   }
 
   return (
-    <li className='blogentry' style={isRemoved ? { display:'none' } : blogStyle}>
+    <li style={isRemoved ? { display:'none' } : blogStyle}>
       <Link to={`/blogs/${blog.id}`}>{blog.title} by {blog.author}</Link>
       <button id='viewbutton' onClick={toggleVisible}>{visible?'hide':'view'}</button>
       {

@@ -12,12 +12,16 @@ export const setNotification = (text) => (dispatch) => {
     }, 5000)
 }
 
-export const createBlog = (title, author, url, userId) => async (dispatch) => {
-  const newBlog = await blogsService.create({ title, author, url })
-  // newBlog returned from server has 'id' and 'likes' fields too
-  dispatch(addBlog(newBlog))
-  dispatch(addBlogToUser({newBlog}))
-  dispatch(setNotification('New post added'))
+export const createBlog = (text) => async (dispatch) => {
+  try {
+    const newBlog = await blogsService.create(text)
+    // newBlog returned from server has 'id' and 'likes' fields too
+    dispatch(addBlog(newBlog))
+    dispatch(addBlogToUser({newBlog}))
+    dispatch(setNotification('New post added'))
+  } catch (error) {
+    dispatch(setNotification(error.message))
+  }
 }
 
 export const likeBlog = (blog) => async (dispatch, getState) => {
