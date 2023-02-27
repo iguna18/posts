@@ -66,10 +66,10 @@ const UserPage = () => {
     } 
   }
 
-  const addComment = (e) => {
+  const addComment = (parentCommentId) => (e) => {
     e.preventDefault()
     const c = e.target.inp.value
-    dispatch(newComment(blogToShow, c))
+    dispatch(newComment(blogToShow, c, parentCommentId))
     dispatch(setNotification(`added comment ${c} to blog ${blogToShow.title}`))
   }
 

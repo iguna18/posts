@@ -56,12 +56,13 @@ export const initializeUsers = () => async (dispatch) => {
   }
 }
 
-export const newComment = (blog, comment) => async (dispatch, getState) => {
+export const newComment = (blog, comment, parentCommentId) => async (dispatch, getState) => {
   try {
-    const commentAndId = await blogsService.addComment(blog.id, comment)
+    //{text,id,creationDate,parentCommentId}
+    const commentObj = await blogsService.addComment(blog.id, comment, parentCommentId)
     let theBlog = getState().blogs.find(b=>b.id == blog.id)
     theBlog = cloneDeep(theBlog)
-    theBlog.comments.push(commentAndId)
+    theBlog.comments.push(commentObj)
     dispatch(updateBlog(theBlog))
   } catch (error) {
     console.log(error);

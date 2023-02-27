@@ -73,12 +73,20 @@ blogsRouter.post('/:id/comments', middleware.userExtractor, async (request, resp
   // Returns a random integer from 0 to 100000:
   const commentId = Math.floor(Math.random() * 100000)
   try {
-    blog.comments = blog.comments.concat({text:request.body.comment, id:commentId})
+    blog.comments = blog.comments.concat({
+      text:request.body.comment, 
+      id:commentId,
+      creationDate:new Date(),
+      parentCommentId:request.body.parentCommentId
+    })
+    //find the parent comment and add the new comment id to its childrens
+    blog.comments.find(c => c.id == request.body.parentCommentId).childCommentIds.push(commentId)
     blog.save()
+
+    return response.json(blog.comments.find(c => c.id == commentId))
   } catch(e) {
     return response.status(501).end(e.message)
   }
-  return response.json({text:request.body.comment, id:commentId})
 })
 
 blogsRouter.get('/:id', async (request, response) => {

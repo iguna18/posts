@@ -21,14 +21,20 @@ const blogSchema = new mongoose.Schema({
       type:String
     },
     parentCommentId:{
-      type: mongoose.Schema.Types.ObjectId,
+      type: Number,
       ref: 'Comment'
     },
-    // creationDate:{
-    //   type: Date,
-    //   required: true,
-    //   default:0
-    // },
+    childCommentIds:[
+      {
+        type: Number,
+        ref: 'Comment'
+      }
+    ],
+    creationDate:{
+      type: Date,
+      required: true,
+      default:0
+    },
     id:{
       type:Number
     },

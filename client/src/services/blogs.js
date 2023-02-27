@@ -46,13 +46,13 @@ const removeOne = (blog_id) => {
   )
 }
 
-const addComment = (blog_id, comment) => {
+const addComment = (blog_id, comment, parentCommentId) => {
   const config = {
     headers: { Authorization:token }
   }
   return (
     axios
-      .post(`${baseUrl}/${blog_id}/comments`, {comment:comment}, config)
+      .post(`${baseUrl}/${blog_id}/comments`, {comment, parentCommentId}, config)
       .then(response => response.data)
   )
 }

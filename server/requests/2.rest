@@ -32,3 +32,12 @@ content-type: application/json
 Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InZhc28iLCJpZCI6IjYzZjY3ZDljMTlmNWVjNTU3ZmRiMDk0NiIsImlhdCI6MTY3NzM0MDE4Nn0.WEOtoUR7JuVtIj0CBe0Y7zDh3M7v8eLJfBJUaTMEvmc
 
 {}
+###
+POST http://localhost:3005/api/blogs/63d81790625fd003f2021bd8/comments
+content-type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InZhc28iLCJpZCI6IjYzZjY3ZDljMTlmNWVjNTU3ZmRiMDk0NiIsImlhdCI6MTY3NzM0MDE4Nn0.WEOtoUR7JuVtIj0CBe0Y7zDh3M7v8eLJfBJUaTMEvmc
+
+{
+   "comment":"vasos reply to 7716 !",
+   "parentCommentId":"7716"
+}
