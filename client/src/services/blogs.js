@@ -16,11 +16,11 @@ const getAll = async () => {
   )
 }
 
-const create = async (text) => {
+const create = async (data) => {
   const config = {
     headers: { Authorization:token }
   }
-  const response = await axios.post(baseUrl, {text}, config)
+  const response = await axios.post(baseUrl, data, config)
   return response.data
 }
 
@@ -33,6 +33,17 @@ const increaseLike = async (blog) => {
   newBlog.user_id = blog.user_id.id
   const res = await axios.put(baseUrl + `/${ newBlog.id }`, newBlog, config)
   return res.data
+}
+
+const toggleLike = (id) => {
+  const config = {
+    headers: { Authorization:token }
+  }
+  return (
+    axios
+      .post(`${baseUrl}/${id}/like`, {}, config)
+      .then(response => response.data)
+  )
 }
 
 const removeOne = (blog_id) => {
@@ -68,4 +79,18 @@ const toggleCommentLike = (blogid, commentid) => {
   )
 }
 
-export default { getAll, create, setToken, increaseLike, removeOne, addComment, toggleCommentLike}
+const addFiles = (blogid, formdataWithFiles) => {
+  const config = {
+    headers: { 
+      Authorization:token,
+      'Content-Type': 'multipart/form-data'
+    }
+  }
+  return (
+    axios
+      .post(`${baseUrl}/${blogid}/images/`, formdataWithFiles, config)
+      .then(response => response.data)
+  )
+}
+
+export default { getAll, create, setToken, increaseLike, removeOne, addComment, toggleCommentLike, addFiles, toggleLike}

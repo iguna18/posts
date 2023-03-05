@@ -8,6 +8,22 @@ const blogSchema = new mongoose.Schema({
     type: 'String',
     // required: true
   },
+  imageinfos: [
+    {
+      mimetype: {
+        type:String,
+        required:true
+      },
+      originalname: {
+        type:String,
+        required:true
+      },
+      data: {
+        type:String,
+        required:true
+      }
+    }
+  ],
   user_id: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User'
@@ -20,6 +36,7 @@ const blogSchema = new mongoose.Schema({
     type: Number,
     default: 0 
   },
+  likers: [mongoose.Schema.Types.ObjectId],
   comments: [
     {
     text:{

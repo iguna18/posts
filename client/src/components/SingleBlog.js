@@ -78,6 +78,18 @@ export const SingleBlog = ({blogToShow, addLike, addComment, loggedUserId}) => {
       <p>
         {blogToShow.text}
       </p>
+      <div>
+        {
+          blogToShow.imageinfos.map((file, i) => {
+            return (
+              <div key={i}>
+                <img src={`data:${file.mimetype};base64,${file.data}`}/>
+                <span>{file.originalname+file.mimetype}</span>
+              </div>
+            )
+          })
+        }
+      </div>
       <p>{blogToShow.likes} likes</p>
       <p>added by <Link to={`/users/${blogToShow.user_id.id}`}>
         @{blogToShow.user_id.username}</Link></p>

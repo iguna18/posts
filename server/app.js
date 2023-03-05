@@ -11,6 +11,7 @@ const loginRouter = require('./controllers/login')
 const middleware = require('./utils/middleware')
 const logger = require('./utils/logger')
 const mongoose = require('mongoose')
+const Blog = require('./models/blog')
 
 mongoose.connect(config.MONGODB_URI)
 logger.info('URI aris ', config.MONGODB_URI)

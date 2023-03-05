@@ -12,14 +12,16 @@ export const setNotification = (text) => (dispatch) => {
     }, 5000)
 }
 
-export const createBlog = (text) => async (dispatch) => {
+export const createBlog = (blog, formdataWithFiles) => async (dispatch) => {
   try {
-    const newBlog = await blogsService.create(text)
-    // newBlog returned from server has 'id' and 'likes' fields too
+    let newBlog = await blogsService.create(blog)
+
+    newBlog = await blogsService.addFiles(newBlog.id, formdataWithFiles)
     dispatch(addBlog(newBlog))
     dispatch(addBlogToUser({newBlog}))
     dispatch(setNotification('New post added'))
   } catch (error) {
+    console.log(error);
     dispatch(setNotification(error.message))
   }
 }

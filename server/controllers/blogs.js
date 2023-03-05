@@ -1,16 +1,30 @@
 const middleware = require('../utils/middleware')
 const Blog = require('../models/blog')
 const User = require('../models/user')
+const multer = require('multer')
+const fs = require('fs')
+
+const fileStorageEngine = multer.memoryStorage()
+
+const upload = multer({ 
+  storage: fileStorageEngine,
+  limits: {
+    fileSize: 10 * 1024 * 1024, // 10 megabytes
+  }
+})
+
 const blogsRouter = require('express').Router()
 
+//get every blog
 blogsRouter.get('/', async (request, response) => {
   const blogs = await Blog.find({}).populate('user_id')
   response.json(blogs)
 })
 
-
+//add a new blog
 blogsRouter.post('/', middleware.userExtractor, async (request, response) => {
   request.body.user_id = request.user_id
+
   if(!request.body.text) {
     response.status(400).end()
     return
@@ -23,6 +37,7 @@ blogsRouter.post('/', middleware.userExtractor, async (request, response) => {
     request.body.comments = []
   
   const blog = new Blog(request.body)
+  
   const saved = await blog.save()
 
   if(!user.blog_ids) //in case the document is not in the format described in the scheme
@@ -34,8 +49,59 @@ blogsRouter.post('/', middleware.userExtractor, async (request, response) => {
   const result = await Blog.findById(saved.id).populate('user_id')
   response.status(201).json(result)
 })
- 
 
+// toggle like to the blog
+blogsRouter.post('/:id/like', middleware.userExtractor, async (request, response) => {
+  const blogid = request.params.id
+  const user_id = request.user_id
+  const blog = await Blog.findById(blogid)
+  if(blog) {
+    const hasLiked = blog.likers.find(uid => uid == user_id)
+    if(!hasLiked) {
+      blog.likers.push(user_id)
+    } else {
+      blog.likers = blog.likers.filter(uid => uid != user_id)
+    }
+    await blog.save()
+    return response.json(blog)
+  } else {
+    response.status(404).end()
+  }
+})
+
+//add images to the blog (save imags to ./images and save their unique names in the database) 
+blogsRouter.post('/:id/images', upload.array('images'), middleware.userExtractor, async (request, response) => {
+  const blog = await Blog.findById(request.params.id)
+  if(!blog) {
+    return response.status(404).end()
+  }
+
+  if (blog.user_id.toString() != request.user_id.toString()) {
+    return response.status(401).send({error:"unauthorized, only the author can add images to the blog"})
+  }
+  if(!blog.imageinfos)
+    blog.imageinfos = []
+  
+  console.log('request.files',request.files);
+  console.log('request.body',request.body);
+
+  for(let i=0; i<request.files.length; i++) {
+    blog.imageinfos.push({
+      mimetype:request.files[i].mimetype,
+      originalname:request.files[i].originalname,
+      data:request.files[i].buffer.toString('base64')
+    })
+  }
+  try{
+    await blog.save()
+    response.status(201).send(await blog.populate('user_id'))
+  } catch (error){
+    console.log(error)
+    response.status(500).end()
+  }
+})
+
+//delete the blog
 blogsRouter.delete('/:id', middleware.userExtractor, async (request, response, next) => {
   const blog = await Blog.findById(request.params.id)
 
@@ -56,6 +122,7 @@ blogsRouter.delete('/:id', middleware.userExtractor, async (request, response, n
   response.json({deleted:blog})
 })
 
+//get the blog
 blogsRouter.get('/:id', async (request, response) => {
   const blog = await Blog.findById(request.params.id)
   if (blog) {
@@ -65,6 +132,7 @@ blogsRouter.get('/:id', async (request, response) => {
   }
 })
 
+//get comments to the blog
 blogsRouter.post('/:id/comments', middleware.userExtractor, async (request, response, next) => {
   const blog = await Blog.findById(request.params.id)
   if(!blog) 
@@ -92,15 +160,7 @@ blogsRouter.post('/:id/comments', middleware.userExtractor, async (request, resp
   }
 })
 
-blogsRouter.get('/:id', async (request, response) => {
-  const blog = await Blog.findById(request.params.id)
-  if (blog) {
-    response.json(blog)
-  } else {
-    response.status(404).end()
-  }
-})
-
+//get the comment
 blogsRouter.get('/:blogid/comments/:commentid', async (request, response) => {
   const blogid = request.params.blogid
   const commentid = request.params.commentid
@@ -116,7 +176,8 @@ blogsRouter.get('/:blogid/comments/:commentid', async (request, response) => {
     response.status(404).end()
   }
 })
-// toggle like to a comment  (add logged in user id to the comment's "likers" field, or remove from it)
+
+// toggle like to the comment  (add the logged-in user id to the comment's "likers" field, or remove from it)
 blogsRouter.post('/:blogid/comments/:commentid/like', middleware.userExtractor, async (request, response) => {
   const blogid = request.params.blogid
   const commentid = request.params.commentid
@@ -140,8 +201,8 @@ blogsRouter.post('/:blogid/comments/:commentid/like', middleware.userExtractor, 
   }
 })
 
+//replace the blog
 blogsRouter.put('/:id', middleware.userExtractor, async (request, response, next) => {
-  
   const blogFromClient = request.body
   if(blogFromClient.id != request.params.id) {
     return response.status(400).send({error:"different blog sent to different address"})
@@ -155,7 +216,5 @@ blogsRouter.put('/:id', middleware.userExtractor, async (request, response, next
   const ret = await Blog.findByIdAndUpdate(blogFromClient.id, blogFromClient, {new:true}).populate('user_id')
   response.status(200).send(ret)
 })
-
-
 
 module.exports = blogsRouter
