@@ -37,6 +37,11 @@ const blogSchema = new mongoose.Schema({
     default: 0 
   },
   likers: [mongoose.Schema.Types.ObjectId],
+  creationDate:{
+    type: Date,
+    required: true,
+    default:0
+  },
   comments: [
     {
     text:{

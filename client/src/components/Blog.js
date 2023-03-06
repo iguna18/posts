@@ -3,9 +3,12 @@ import PropTypes from 'prop-types'
 import {
   Link
 } from "react-router-dom"
-const Blog = ({ blog, blogStyle, addLike, removeBlog, isCreatedByCurrentUser }) => {
+import { deleteBlog, toggleBlogLike } from '../reducers/thunks'
+import { useDispatch } from 'react-redux'
+const Blog = ({ blog, blogStyle, isCreatedByCurrentUser }) => {
   const [visible, setVisible] = useState(false)
   const [isRemoved, setIsRemoved] = useState(false)
+  const dispatch = useDispatch()
 
   const toggleVisible = () => {
     setVisible(!visible)
@@ -21,12 +24,14 @@ const Blog = ({ blog, blogStyle, addLike, removeBlog, isCreatedByCurrentUser }) 
             <p>{blog.url}</p>
             <p>
               {blog.likes}
-              <button id='likebutton' onClick={addLike(blog)}>like</button>
+              <button id='likebutton' onClick={() => dispatch(toggleBlogLike(blog.id))}>like</button>
             </p>
             {
               isCreatedByCurrentUser && (
                 <p>
-                  <button onClick={removeBlog(blog, setIsRemoved)}>remove</button>
+                  <button onClick={() => dispatch(deleteBlog(blog, setIsRemoved))}>
+                    remove
+                  </button>
                 </p>
               )
             }
@@ -40,8 +45,6 @@ const Blog = ({ blog, blogStyle, addLike, removeBlog, isCreatedByCurrentUser }) 
 Blog.propTypes = {
   blog: PropTypes.object.isRequired,
   blogStyle: PropTypes.object,
-  addLike: PropTypes.func.isRequired,
-  removeBlog: PropTypes.func.isRequired,
   isCreatedByCurrentUser: PropTypes.bool.isRequired
 }
 

@@ -10,7 +10,7 @@ const blogStyle = {
   marginBottom: 5
 }
 
-export const BlogsView = ({blogsCopy, addLike,removeBlog, user}) => {
+export const BlogsView = ({blogsCopy, removeBlog, user}) => {
   return (
     <div>
       <h3>Blogs</h3>
@@ -25,8 +25,7 @@ export const BlogsView = ({blogsCopy, addLike,removeBlog, user}) => {
               return (
                 <Blog key={blog.id} 
                   blog={blog} blogStyle={blogStyle}
-                  addLike={addLike} removeBlog={removeBlog}
-                  isCreatedByCurrentUser={blog.user_id.username === user.name}/>
+                  isCreatedByCurrentUser={blog.user_id.username === user.username}/>
               )
             })
         }

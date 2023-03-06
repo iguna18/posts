@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom"
-import { toggleCommentLike } from "../reducers/thunks";
+import { toggleBlogLike, toggleCommentLike } from "../reducers/thunks";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
@@ -66,12 +66,13 @@ const Comment = ({comment, loggedUserId, blog, dispatch, addComment}) => {
   )
 }
 
-export const SingleBlog = ({blogToShow, addLike, addComment, loggedUserId}) => {
+export const SingleBlog = ({blogToShow, addComment, loggedUserId}) => {
   const dispatch = useDispatch()
   if(!blogToShow)
     return (
       <div></div>
     )
+  const userLikesBlog = blogToShow.likers.find(uid => uid == loggedUserId)
   return (
     <div>
       <h3>{blogToShow.title}</h3>
@@ -90,10 +91,12 @@ export const SingleBlog = ({blogToShow, addLike, addComment, loggedUserId}) => {
           })
         }
       </div>
-      <p>{blogToShow.likes} likes</p>
+      <p>{blogToShow.likers.length} likes</p>
       <p>added by <Link to={`/users/${blogToShow.user_id.id}`}>
         @{blogToShow.user_id.username}</Link></p>
-      <button onClick={addLike(blogToShow)}>like</button>
+      <button onClick={() => dispatch(toggleBlogLike(blogToShow.id))}>
+        { userLikesBlog ? 'unlike' : 'like' } 
+      </button>
       <h5>comments</h5>
       <form onSubmit={addComment(null)}>
         <input name='inp'></input>

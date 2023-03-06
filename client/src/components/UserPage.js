@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import Message from './Message'
 import { useSelector, useDispatch } from 'react-redux'
-import {likeBlog, setNotification, deleteBlog,initializeBlogs, initializeUsers, newComment} from '../reducers/thunks'
+import {toggleBlogLike, setNotification, deleteBlog,initializeBlogs, initializeUsers, newComment} from '../reducers/thunks'
 import { setUser } from '../reducers/userSlice'
 import {
   Routes, Route, Link, useMatch 
@@ -46,27 +46,7 @@ const UserPage = () => {
   const onLogOut = () => {
     dispatch(setUser(null))
     window.localStorage.removeItem('loggedBlogappUser')
-  }
-
-  const addLike = (blog) => () => {
-    try {
-      dispatch(likeBlog(blog))
-      dispatch(setNotification(`added like to ${blog.title} by ${blog.author}`))
-    } catch (error) {
-      dispatch(setNotification(error.message))
-    } 
-  }
-
-  const removeBlog = (blog, setIsRemoved) => async () => {
-    try {
-      dispatch(deleteBlog(blog))
-      dispatch(setNotification(`removed ${blog.title} by ${blog.author}`))
-    } catch (error) {
-      dispatch(setNotification(error.message))
-    } 
-  }
-
-  
+  }  
   
   let match = useMatch('/users/:id')
   const userToShow = match ? users.find(u => u.id === match.params.id) : null
@@ -77,7 +57,6 @@ const UserPage = () => {
     e.preventDefault()
     const c = e.target.inp.value
     dispatch(newComment(blogToShow, c, parentCommentId))
-    dispatch(setNotification(`added comment ${c} to blog ${blogToShow.title}`))
   }
   // we want to sort the array for the view so we copy it due to its immutability
   let blogsCopy = [...blogs]
@@ -97,8 +76,7 @@ const UserPage = () => {
       </Navigation>
       <Routes>
         <Route path='/blogs' element={ // blogs view
-          <BlogsView addLike={addLike} removeBlog={removeBlog} blogsCopy={blogsCopy}
-            user = {user}/>
+          <BlogsView blogsCopy={blogsCopy} user = {user}/>
         } />
         <Route path='/users' element={ // users view
           <UsersView users={users}/>
@@ -107,7 +85,7 @@ const UserPage = () => {
           <SingleUser userToShow={userToShow} loggedUserId={loggedUserId}/>
         }/>
         <Route path='/blogs/:id' element={
-          <SingleBlog blogToShow={blogToShow} addLike={addLike} addComment={addComment}
+          <SingleBlog blogToShow={blogToShow} addComment={addComment}
             loggedUserId={loggedUserId}/>
         }/>
       </Routes>

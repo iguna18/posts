@@ -23,20 +23,18 @@ blogsRouter.get('/', async (request, response) => {
 
 //add a new blog
 blogsRouter.post('/', middleware.userExtractor, async (request, response) => {
-  request.body.user_id = request.user_id
-
   if(!request.body.text) {
     response.status(400).end()
     return
   }
-  const user = await User.findById(request.body.user_id)
+  const user = await User.findById(request.user_id)
   if(!user) {
     return response.status(401).end({error:"token in correct format but the passed id deosnt belong to any user (expired token?)"})
   }
   if(!request.body.comments)
     request.body.comments = []
   
-  const blog = new Blog(request.body)
+  const blog = new Blog({...request.body, user_id:request.user_id, creationDate:new Date()})
   
   const saved = await blog.save()
 

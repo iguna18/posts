@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux"
-import { setNotification } from "../reducers/thunks"
+import { setNotification, toggleFollow } from "../reducers/thunks"
 import { addFollow, removeFollow } from "../reducers/usersSlice"
 import usersService from '../services/users'
 
@@ -12,27 +12,6 @@ export const SingleUser = ({userToShow, loggedUserId}) => {
     )
   })
 
-  const handleFollow = () => {
-    if(!followState) {
-      return usersService
-      .addFollow(loggedUserId, userToShow.id)
-      .then((data) => {
-        dispatch(addFollow({fromId:loggedUserId, toId:userToShow.id}))
-      })
-      .catch(err => {
-        dispatch(setNotification(err.message))
-      })
-    }
-    usersService
-    .removeFollow(loggedUserId, userToShow.id)
-    .then(data => {
-      dispatch(removeFollow({fromId:loggedUserId, toId:userToShow.id}))
-    })
-    .catch(err => {
-      dispatch(setNotification(err.message))
-    })
-  }
-
   if(!userToShow)
     return (
       <div></div>
@@ -43,7 +22,7 @@ export const SingleUser = ({userToShow, loggedUserId}) => {
       <div>
         {
           userToShow.id != loggedUserId ?
-            <button onClick={handleFollow}>
+            <button onClick={() => dispatch(toggleFollow(loggedUserId, userToShow.id, followState))}>
               {followState ? 'unfollow' : 'follow'}
             </button>
           : null

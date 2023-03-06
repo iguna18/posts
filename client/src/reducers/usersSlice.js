@@ -24,27 +24,27 @@ const usersSlice = createSlice({
       return
     },
     addFollow: (state, action) => {
-      const {fromId, toId} = action.payload
-      const followingsOfFrom = state.find(u => u.id == fromId).following_ids
-      const followersOfTo = state.find(u => u.id == toId).follower_ids
+      const {fromid, toid} = action.payload
+      const followingsOfFrom = state.find(u => u.id == fromid).following_ids
+      const followersOfTo = state.find(u => u.id == toid).follower_ids
 
-      if(!followingsOfFrom.some(id => id==toId))
-        followingsOfFrom.push(toId)
+      if(!followingsOfFrom.some(id => id==toid))
+        followingsOfFrom.push(toid)
 
-      if(!followersOfTo.some(id => id==fromId))
-        followersOfTo.push(fromId)
+      if(!followersOfTo.some(id => id==fromid))
+        followersOfTo.push(fromid)
       
       return
     },
     removeFollow: (state,action) => {
-      const {fromId, toId} = action.payload
-      const fromIdx = state.findIndex(u => u.id == fromId)
-      const toIdx = state.findIndex(u => u.id == toId)
+      const {fromid, toid} = action.payload
+      const fromIndex = state.findIndex(u => u.id == fromid)
+      const toIndex = state.findIndex(u => u.id == toid)
 
-      state[fromIdx].following_ids =
-        state[fromIdx].following_ids.filter(id => id!=toId)
-      state[toIdx].follower_ids =
-        state[toIdx].follower_ids.filter(id => id!=fromId)
+      state[fromIndex].following_ids =
+        state[fromIndex].following_ids.filter(id => id!=toid)
+      state[toIndex].follower_ids =
+        state[toIndex].follower_ids.filter(id => id!=fromid)
       return
     }
   }
