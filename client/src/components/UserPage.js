@@ -58,8 +58,7 @@ const UserPage = () => {
     const c = e.target.inp.value
     dispatch(newComment(blogToShow, c, parentCommentId))
   }
-  // we want to sort the array for the view so we copy it due to its immutability
-  let blogsCopy = [...blogs]
+
   return (
     <Div>
       <Message/>
@@ -76,7 +75,7 @@ const UserPage = () => {
       </Navigation>
       <Routes>
         <Route path='/blogs' element={ // blogs view
-          <BlogsView blogsCopy={blogsCopy} user = {user}/>
+          <BlogsView blogs={blogs} user = {user}/>
         } />
         <Route path='/users' element={ // users view
           <UsersView users={users}/>

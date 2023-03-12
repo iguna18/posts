@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { setNotification, toggleFollow } from "../reducers/thunks"
 import { addFollow, removeFollow } from "../reducers/usersSlice"
 import usersService from '../services/users'
+import Blog from "./Blog"
 
 export const SingleUser = ({userToShow, loggedUserId}) => {
   const dispatch = useDispatch()
@@ -33,9 +34,10 @@ export const SingleUser = ({userToShow, loggedUserId}) => {
       {
         userToShow.blog_ids.map(b => {
           return (
-            <li key = {b.id}>
-              {b.title}
-            </li>
+            // <li key = {b.id}>
+            //   {b.title}
+            // </li>
+            <Blog blog={b}/>
           )
         })
       }

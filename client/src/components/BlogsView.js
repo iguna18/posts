@@ -1,3 +1,5 @@
+import { Grid } from "@mui/material"
+import { Card } from "react-bootstrap"
 import Blog from "./Blog"
 import CreateNewBlog from "./CreateNewBlog"
 import Togglable from "./Togglable"
@@ -10,16 +12,21 @@ const blogStyle = {
   marginBottom: 5
 }
 
-export const BlogsView = ({blogsCopy, removeBlog, user}) => {
+export const BlogsView = ({blogs, removeBlog, user}) => {
+  // const file = blogs.find(b => b.id =='64062b19943fa4a7b89fd53a').imageinfos[0]
   return (
     <div>
       <h3>Blogs</h3>
       <Togglable buttonLabel='new blog' >
         <CreateNewBlog user={user}/>
       </Togglable>
-      <ul>
+      {/* <div style={{
+        display:'grid'
+      }}> */}
+      <Grid container>
         {
-          blogsCopy
+          blogs
+            .filter(()=>true)
             .sort((a, b) => b.likes - a.likes)
             .map(blog => {
               return (
@@ -29,7 +36,8 @@ export const BlogsView = ({blogsCopy, removeBlog, user}) => {
               )
             })
         }
-      </ul>
+      {/* </div> */}
+      </Grid>
     </div>
   )
 }
