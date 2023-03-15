@@ -1,6 +1,6 @@
 import loginService from '../services/login'
 import blogService from '../services/blogs'
-import Message from './Message'
+import Popup from './Popup'
 import LoginForm from './LoginForm'
 import Togglable from './Togglable'
 import { setNotification } from '../reducers/thunks'
@@ -44,7 +44,7 @@ const LoginPage = () => {
   return (
     <div>
       <h2>log in to application</h2>
-      <Message/>
+      <Popup/>
       <LoginForm loginFunction={LogIn} />
       <Togglable buttonLabel='registration'>
         <RegistrationForm registrationFunction={register}/>

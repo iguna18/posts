@@ -1,0 +1,11 @@
+.f {
+  font-weight: lighter;
+  cursor: pointer;
+}
+.f span {
+  font-weight: bold;
+}
+
+.p {
+  padding: 0px 30px;
+}

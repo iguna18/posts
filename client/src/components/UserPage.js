@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import Message from './Message'
+import Popup from './Popup'
 import { useSelector, useDispatch } from 'react-redux'
 import {toggleBlogLike, setNotification, deleteBlog,initializeBlogs, initializeUsers, newComment} from '../reducers/thunks'
 import { setUser } from '../reducers/userSlice'
@@ -61,7 +61,7 @@ const UserPage = () => {
 
   return (
     <Div>
-      <Message/>
+      <Popup/>
       <Navigation>
         <div>
           <Link style={{marginRight:'5px'}} to='/blogs'>blogs</Link>

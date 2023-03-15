@@ -158,7 +158,6 @@ function Blog({blog, isCreatedByCurrentUser}) {
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
-  console.log(blog);
 
   return (
     <Card sx={{ maxWidth: 245 }}>

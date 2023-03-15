@@ -4,6 +4,7 @@ import UserPage from './components/UserPage'
 import LoginPage from './components/LoginPage'
 import { useSelector, useDispatch } from 'react-redux'
 import { setUser } from './reducers/userSlice'
+import { Container } from '@mui/system'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -27,9 +28,12 @@ const App = () => {
   }
 
   return (
-    <div style={style}>
+    // <div style={style}>
+    <Container fixed>
       {user != null ? <UserPage/> : <LoginPage/>}
-    </div>
+
+    </Container>
+    // </div>
   )
 }
 

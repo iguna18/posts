@@ -7,6 +7,7 @@ import messageReducer from './reducers/messageSlice'
 import blogsReducer from './reducers/blogsSlice'
 import userReducer from './reducers/userSlice'
 import usersReducer from './reducers/usersSlice'
+import popupReducer from './reducers/popupSlice'
 
 import { Provider } from 'react-redux'
 import { configureStore } from '@reduxjs/toolkit'
@@ -16,7 +17,8 @@ let store = configureStore({
     message: messageReducer,
     blogs: blogsReducer,
     user: userReducer,
-    users: usersReducer
+    users: usersReducer,
+    popup: popupReducer
   }
 })
 
