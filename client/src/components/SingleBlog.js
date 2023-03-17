@@ -44,7 +44,7 @@ const Comment = ({comment, loggedUserId, blog, dispatch, addComment}) => {
       </div>
       <div style={{marginLeft:'40px'}}>
         { replyInputVisible &&
-          <form onSubmit={addComment(comment.id)}>
+          <form onSubmit={addComment(comment.id, blog, dispatch)}>
             <input name='inp'></input>
             <button>add comment</button>
           </form>
@@ -98,7 +98,7 @@ export const SingleBlog = ({blogToShow, addComment, loggedUserId}) => {
         { userLikesBlog ? 'unlike' : 'like' } 
       </button>
       <h5>comments</h5>
-      <form onSubmit={addComment(null)}>
+      <form onSubmit={addComment(null, blogToShow, dispatch)}>
         <input name='inp'></input>
         <button>add comment</button>
       </form>

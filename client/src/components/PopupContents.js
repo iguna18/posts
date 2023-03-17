@@ -1,8 +1,13 @@
 import Blog from './Blog'
+import { SingleBlog } from './SingleBlog'
+import { addComment } from './UserPage'
 
 export const BlogPopup = (props) => {
+  // return (
+  //   <Blog {...props}/>
+  // )
   return (
-    <Blog {...props}/>
+    <SingleBlog {...props} addComment={addComment}/>
   )
 }
 
@@ -13,4 +18,5 @@ export const AddBlogPopup = (props) => {
     </div>
   )
 }
+
 

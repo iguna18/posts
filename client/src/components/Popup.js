@@ -12,8 +12,8 @@ const handleClose = (dispatch) => (e) => {
 const Popup = () => {
   const dispatch = useDispatch()
   let message = useSelector(state => state.message)
-  let popupContentN = useSelector(state => state.popupContentN)
-  let popupProps = useSelector(state => state.popupProps)
+  let popupContentN = useSelector(state => state.popup.popupContentN)
+  let popupProps = useSelector(state => state.popup.popupProps)
   if(message) {
     return (
       <div className='overlay'>
@@ -26,17 +26,18 @@ const Popup = () => {
       </div>
     )
   }
-  return null
   if(popupContentN == _enum.NO_POPUP)
-    return
+    return null
   
   let PopupContent = null
   switch (popupContentN) {
     case _enum.ADD_BLOG_POPUP: 
-      PopupContent = BlogPopup
+      console.log('abp')
+      PopupContent = AddBlogPopup
       break;
     case _enum.BLOG_POPUP:
-      PopupContent = AddBlogPopup
+      console.log('bp')
+      PopupContent = BlogPopup
       break;
     default:
       break;

@@ -5,6 +5,7 @@ import {
 } from "react-router-dom"
 import { deleteBlog, toggleBlogLike } from '../reducers/thunks'
 import { useDispatch } from 'react-redux'
+import { setpopupContentN, setPopupProps } from "../reducers/popupSlice"
 
 // const Blog = ({ blog, blogStyle, isCreatedByCurrentUser }) => {
 //   const [visible, setVisible] = useState(false)
@@ -59,6 +60,8 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { Button } from '@mui/material'
+import _enum from './enum'
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -152,13 +155,12 @@ const ImagesSection = ({imageinfos}) => {
   // )
 }
 
-function Blog({blog, isCreatedByCurrentUser}) {
+function Blog({blog, isCreatedByCurrentUser, addComment, loggedUserId}) {
   const [expanded, setExpanded] = React.useState(false);
-
+  const dispatch = useDispatch()
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
-
   return (
     <Card sx={{ maxWidth: 245 }}>
       <CardHeader
@@ -174,7 +176,10 @@ function Blog({blog, isCreatedByCurrentUser}) {
         }
         subheader="September 14, 2016"
       />
-
+      <Button onClick = {() => { 
+        dispatch(setpopupContentN(_enum.BLOG_POPUP))
+        dispatch(setPopupProps({blogToShow:blog, loggedUserId:loggedUserId}))
+      }}>AVAVAVA</Button>
       <ImagesSection imageinfos={blog.imageinfos}/>
       <CardContent>
         <Typography variant="body2" color="text.secondary">

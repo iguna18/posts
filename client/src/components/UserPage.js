@@ -23,6 +23,11 @@ const Div = styled.div`
   flex-direction: column;
   background-color: red; */
 `
+export const addComment = (parentCommentId, blog, dispatch) => (e) => {
+  e.preventDefault()
+  const c = e.target.inp.value
+  dispatch(newComment(blog, c, parentCommentId))
+}
 
 const UserPage = () => {
   const dispatch = useDispatch()
@@ -53,11 +58,7 @@ const UserPage = () => {
   match = useMatch('/blogs/:id')
   const blogToShow = match ? blogs.find(b => b.id === match.params.id) : null
   
-  const addComment = (parentCommentId) => (e) => {
-    e.preventDefault()
-    const c = e.target.inp.value
-    dispatch(newComment(blogToShow, c, parentCommentId))
-  }
+
 
   return (
     <Div>
@@ -75,7 +76,10 @@ const UserPage = () => {
       </Navigation>
       <Routes>
         <Route path='/blogs' element={ // blogs view
-          <BlogsView blogs={blogs} user = {user}/>
+        <BlogsView blogs={blogs} user = {user}
+          addComment={addComment}
+          loggedUserId={loggedUserId}
+          />
         } />
         <Route path='/users' element={ // users view
           <UsersView users={users}/>
