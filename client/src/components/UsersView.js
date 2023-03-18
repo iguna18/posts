@@ -18,7 +18,7 @@ const UsersView = ({users}) => {
               return (
                 <tr key={u.id}>
                   <td>
-                    <Link to={`/users/${u.id}`}>{u.name}</Link>
+                    <Link to={`/users/${u.id}`}>@{u.username}</Link>
                   </td>
                   <td>
                     {u.blog_ids.length}

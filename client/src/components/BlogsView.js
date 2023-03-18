@@ -5,9 +5,17 @@ import { setpopupContentN, setPopupProps } from "../reducers/popupSlice"
 import Blog from "./Blog"
 import CreateNewBlog from "./CreateNewBlog"
 import Togglable from "./Togglable"
+import { useNavigate } from 'react-router-dom'
 
+const onClickNewBlog = (dispatch) => () => {
+  dispatch(setpopupContentN(_enum.ADD_BLOG_POPUP))
+}
+const onClickBlog = (navigate, blogid) => () => {
+  navigate(`${blogid}`)
+}
 
 export const BlogsView = ({blogs, removeBlog, user, addComment, loggedUserId}) => {
+  const navigate = useNavigate()
   const dispatch = useDispatch()
   const us =
     useSelector(state => state.users.find(u => u.username == user.username))  
@@ -21,9 +29,7 @@ export const BlogsView = ({blogs, removeBlog, user, addComment, loggedUserId}) =
     <div>
       <button onClick={()=>console.log(us)}>aee</button>
       <h3>Blogs</h3>
-      <button onClick={()=>{
-        
-      }}>axali blog</button>
+      <button onClick={onClickNewBlog(dispatch)}>axali blog</button>
       <Togglable buttonLabel='new blog' >
         <CreateNewBlog user={user}/>
       </Togglable>
@@ -39,12 +45,11 @@ export const BlogsView = ({blogs, removeBlog, user, addComment, loggedUserId}) =
             .filter(b => b.user_id.follower_ids.find(fid => fid == userid))
             .sort((a, b) => b.likes - a.likes)
             .map(blog => {
-              console.log('yleo');
               return (
-                // <div key={blog.id} className='blogwrapper'>
-                  <Blog blog={blog} key={blog.id} addComment={addComment} loggedUserId={loggedUserId}
+                <div key={blog.id} className='blogwrapper' onClick={onClickBlog(navigate, blog.id)}>
+                  <Blog blog={blog} addComment={addComment} loggedUserId={loggedUserId}
                     isCreatedByCurrentUser={blog.user_id.username === user.username}/>
-                // </div>
+                </div>
               )
             })
         }

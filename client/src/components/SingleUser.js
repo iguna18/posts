@@ -8,7 +8,6 @@ import { setpopupContentN, setPopupProps } from "../reducers/popupSlice"
 import _enum from "./enum"
 
 const onClickFollowers = (dispatch, userid) => async () => {
-  console.log('ae')
   try {
     let followers = await usersService.getFollowers(userid)
     dispatch(setpopupContentN(_enum.USER_LIST_POPUP))
@@ -17,6 +16,17 @@ const onClickFollowers = (dispatch, userid) => async () => {
     console.log(error)
   }
 }
+
+const onClickFollowings = (dispatch, userid) => async () => {
+  try {
+    let followings = await usersService.getFollowings(userid)
+    dispatch(setpopupContentN(_enum.USER_LIST_POPUP))
+    dispatch(setPopupProps({userList:followings}))    
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 
 export const SingleUser = ({userToShow, loggedUserId}) => {
   const dispatch = useDispatch()
@@ -49,7 +59,7 @@ export const SingleUser = ({userToShow, loggedUserId}) => {
           <span onClick={onClickFollowers(dispatch, userToShow.id)}>
           <span>{userToShow.follower_ids.length}</span> followers 
           </span>
-          <span>
+          <span onClick={onClickFollowings(dispatch, userToShow.id)}>
           <span> {userToShow.following_ids.length}</span> followings
           </span>
         </div>
@@ -72,7 +82,7 @@ export const SingleUser = ({userToShow, loggedUserId}) => {
             // <li key = {b.id}>
             //   {b.title}
             // </li>
-            <Blog blog={b}/>
+            <Blog key={b.id} blog={b}/>
           )
         })
       }

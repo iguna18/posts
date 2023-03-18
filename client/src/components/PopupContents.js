@@ -2,6 +2,7 @@ import Blog from './Blog'
 import { SingleBlog } from './SingleBlog'
 import { addComment } from './UserPage'
 import '../styles/PopupContent.css'
+import CreateNewBlog from './CreateNewBlog'
 
 //cancel this
 export const BlogPopup = (props) => {
@@ -15,9 +16,7 @@ export const BlogPopup = (props) => {
 
 export const AddBlogPopup = (props) => {
   return (
-    <div>
-      ZD
-    </div>
+    <CreateNewBlog/>
   )
 }
 

@@ -24,9 +24,18 @@ const Undercomment = styled.div`
 const onClickLikes = (dispatch, blogid) => async () => {
   try {
     let likers = await blogsService.getBlogLikers(blogid)
-    console.log(likers)
     dispatch(setpopupContentN(_enum.USER_LIST_POPUP))
-    dispatch(setPopupProps({userList:likers}))    
+    dispatch(setPopupProps({userList:likers}))
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+const onClickCommentLikes = (dispatch, blogid, commentid) => async () => {
+  try {
+    let likers = await blogsService.getCommentLikers(blogid, commentid)
+    dispatch(setpopupContentN(_enum.USER_LIST_POPUP))
+    dispatch(setPopupProps({userList:likers}))
   } catch (error) {
     console.log(error)
   }
@@ -54,7 +63,7 @@ const Comment = ({comment, loggedUserId, blog, dispatch, addComment}) => {
             dispatch(toggleCommentLike(blogid, comment.id, loggedUserId))}>
             { userLikesComment ? 'unlike' : 'like' } 
           </span>
-          <span >{likesNumber} likes</span>
+          <span onClick={onClickCommentLikes(dispatch, blog.id, comment.id)}>{likesNumber} likes</span>
           <span>{new Date(comment.creationDate).toLocaleString('en-UK')}</span>
         </Undercomment>
       </div>
