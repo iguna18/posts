@@ -93,4 +93,21 @@ const addFiles = (blogid, formdataWithFiles) => {
   )
 }
 
-export default { getAll, create, setToken, increaseLike, removeOne, addComment, toggleCommentLike, addFiles, toggleLike}
+const getBlogLikers = (blogid) => {
+  return (
+    axios
+      .get(`${baseUrl}/${blogid}/likers/`)
+      .then(response => response.data)
+  )
+}
+
+const getCommentLikers = (blogid, commentid) => {
+  return (
+    axios
+      .get(`${baseUrl}/${blogid}/comments/${commentid}/likers/`)
+      .then(response => response.data)
+  )
+}
+
+export default { getAll, create, setToken, increaseLike, removeOne, addComment, toggleCommentLike, addFiles, toggleLike, 
+  getBlogLikers, getCommentLikers}

@@ -4,6 +4,19 @@ import { addFollow, removeFollow } from "../reducers/usersSlice"
 import usersService from '../services/users'
 import Blog from "./Blog"
 import '../styles/SingleUser.css'
+import { setpopupContentN, setPopupProps } from "../reducers/popupSlice"
+import _enum from "./enum"
+
+const onClickFollowers = (dispatch, userid) => async () => {
+  console.log('ae')
+  try {
+    let followers = await usersService.getFollowers(userid)
+    dispatch(setpopupContentN(_enum.USER_LIST_POPUP))
+    dispatch(setPopupProps({userList:followers}))    
+  } catch (error) {
+    console.log(error)
+  }
+}
 
 export const SingleUser = ({userToShow, loggedUserId}) => {
   const dispatch = useDispatch()
@@ -33,8 +46,12 @@ export const SingleUser = ({userToShow, loggedUserId}) => {
         <h3>{name}</h3>
         <div>@{userToShow.username}</div>
         <div className='f'>
+          <span onClick={onClickFollowers(dispatch, userToShow.id)}>
           <span>{userToShow.follower_ids.length}</span> followers 
+          </span>
+          <span>
           <span> {userToShow.following_ids.length}</span> followings
+          </span>
         </div>
         </div>
       </div>

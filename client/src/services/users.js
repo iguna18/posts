@@ -37,4 +37,19 @@ const removeFollow = (from,to) => {
   )
 }
 
-export default { getAll, addUser, addFollow, removeFollow }
+const getFollowers = (blogid) => {
+  return (
+    axios
+      .get(`${baseUrl}/${blogid}/follower_ids/`)
+      .then(response => response.data)
+  )
+}
+
+const getFollowings = (blogid) => {
+  return (
+    axios
+      .get(`${baseUrl}/${blogid}/following_ids/`)
+      .then(response => response.data)
+  )
+}
+export default { getAll, addUser, addFollow, removeFollow, getFollowers, getFollowings }

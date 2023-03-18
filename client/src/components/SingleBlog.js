@@ -6,6 +6,8 @@ import { useEffect, useState } from "react";
 import { updateBlog } from "../reducers/blogsSlice";
 import { setpopupContentN, setPopupProps } from "../reducers/popupSlice";
 import _enum from "./enum";
+import blogsService from "../services/blogs"
+import '../styles/SingleBlog.css'
 
 const Undercomment = styled.div`
   display:flex;
@@ -18,9 +20,16 @@ const Undercomment = styled.div`
     cursor: pointer;
   }
 `
-const onClickLikes = (dispatch, likers_ids) => () => {
-  dispatch(setpopupContentN(_enum.USER_LIST_POPUP))    
-  dispatch(setPopupProps({userList:likers_ids}))
+
+const onClickLikes = (dispatch, blogid) => async () => {
+  try {
+    let likers = await blogsService.getBlogLikers(blogid)
+    console.log(likers)
+    dispatch(setpopupContentN(_enum.USER_LIST_POPUP))
+    dispatch(setPopupProps({userList:likers}))    
+  } catch (error) {
+    console.log(error)
+  }
 }
 
 //in react i have Blog component which renders 5 Comment component. Comment component is recursive, it may on its own render other comment components inside itself. Let's take a certain Comment component rendered by Blog. It also has a button which when clicked should increase a number state stored in redux. This number state determines how many Comment components should our chosen Comment component render. Problem is, though the button click correctly  increases the number state in redux, the number of our chosen Comment's rendered Comment components doesn't change.
@@ -45,7 +54,7 @@ const Comment = ({comment, loggedUserId, blog, dispatch, addComment}) => {
             dispatch(toggleCommentLike(blogid, comment.id, loggedUserId))}>
             { userLikesComment ? 'unlike' : 'like' } 
           </span>
-          <span onClick={onClickLikes(dispatch, comment.likers)}>{likesNumber} likes</span>
+          <span >{likesNumber} likes</span>
           <span>{new Date(comment.creationDate).toLocaleString('en-UK')}</span>
         </Undercomment>
       </div>
@@ -98,7 +107,7 @@ export const SingleBlog = ({blogToShow, addComment, loggedUserId}) => {
           })
         }
       </div>
-      <p>{blogToShow.likers.length} likes</p>
+      <p className='bl' onClick={onClickLikes(dispatch, blogToShow.id)}>{blogToShow.likers.length} likes</p>
       <p>added by <Link to={`/users/${blogToShow.user_id.id}`}>
         @{blogToShow.user_id.username}</Link></p>
       <button onClick={() => dispatch(toggleBlogLike(blogToShow.id))}>

@@ -47,7 +47,7 @@ usersRouter.patch('/:id', async (req, res) => {
 // })
 
 //for followers popup on frontend
-usersRouter.get('/:id/followers', async (request, response) => {
+usersRouter.get('/:id/follower_ids', async (request, response) => {
   const userid = request.params.id
   const user = await User.findById(userid)
   if(!user) {
@@ -55,13 +55,13 @@ usersRouter.get('/:id/followers', async (request, response) => {
   }
   const u = await user.populate({
     path:'follower_ids',
-    select:'username firstname lastname'
+    select:'username firstname lastname littleimageinfo'
   })
   return response.json(u.follower_ids)
 })
 
 //for followings popup on frontend
-usersRouter.get('/:id/followings', async (request, response) => {
+usersRouter.get('/:id/following_ids', async (request, response) => {
   const userid = request.params.id
   const user = await User.findById(userid)
   if(!user) {
@@ -69,7 +69,7 @@ usersRouter.get('/:id/followings', async (request, response) => {
   }
   const u = await user.populate({
     path:'following_ids',
-    select:'username firstname lastname'
+    select:'username firstname lastname littleimageinfo'
   })
   return response.json(u.following_ids)
 })

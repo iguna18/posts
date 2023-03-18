@@ -1,5 +1,4 @@
 import { Grid } from "@mui/material"
-import './styles/BlogsView.css'
 import { useSelector, useDispatch } from "react-redux"
 import _enum from "./enum"
 import { setpopupContentN, setPopupProps } from "../reducers/popupSlice"

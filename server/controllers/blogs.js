@@ -213,7 +213,7 @@ blogsRouter.get('/:blogid/comments/:commentid/likers', async (request, response)
   }
   const b = await blog.populate({
     path:`comments.${commentIndex}.likers`,
-    select:'username firstname lastname'
+    select:'username firstname lastname littleimageinfo'
   })
   return response.json(b.comments[commentIndex].likers)
 })
@@ -227,7 +227,7 @@ blogsRouter.get('/:blogid/likers', async (request, response) => {
   }
   const b = await blog.populate({
     path:'likers',
-    select:'username firstname lastname'
+    select:'username firstname lastname littleimageinfo'
   })
   return response.json(b.likers)
 })
