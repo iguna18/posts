@@ -46,6 +46,34 @@ usersRouter.patch('/:id', async (req, res) => {
 //   }
 // })
 
+//for followers popup on frontend
+usersRouter.get('/:id/followers', async (request, response) => {
+  const userid = request.params.id
+  const user = await User.findById(userid)
+  if(!user) {
+    return response.status(404).end()
+  }
+  const u = await user.populate({
+    path:'follower_ids',
+    select:'username firstname lastname'
+  })
+  return response.json(u.follower_ids)
+})
+
+//for followings popup on frontend
+usersRouter.get('/:id/followings', async (request, response) => {
+  const userid = request.params.id
+  const user = await User.findById(userid)
+  if(!user) {
+    return response.status(404).end()
+  }
+  const u = await user.populate({
+    path:'following_ids',
+    select:'username firstname lastname'
+  })
+  return response.json(u.following_ids)
+})
+
 usersRouter.get('/:id', async (req, res) => {
   const user = await User.findById(req.params.id)
   if (user) {
@@ -93,11 +121,12 @@ usersRouter.post('/follow', async (req, res) => {
     return
   }
   if(!userFrom.following_ids.find(f=>f==to))
-    userFrom.following_ids = userFrom.following_ids.concat(to)
+  userFrom.following_ids = userFrom.following_ids.concat(to)
   
   if(!userTo.follower_ids.find(f=>f==from))
-    userTo.follower_ids = userTo.follower_ids.concat(from)  
+  userTo.follower_ids = userTo.follower_ids.concat(from)  
   
+  console.log('axca')
   const resultFrom = await userFrom.save()
   const resultTo = await userTo.save()
   res.status(201).json({from:resultFrom, to:resultTo})

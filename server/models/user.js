@@ -34,29 +34,23 @@ const userSchema = new mongoose.Schema({
   imageinfo: {
     mimetype: {
       type:String,
-      required:true
     },
     originalname: {
       type:String,
-      required:true
     },
     data: {
       type:String,
-      required:true
     }
   },
   littleimageinfo: {
     mimetype: {
       type:String,
-      required:true
     },
     originalname: {
       type:String,
-      required:true
     },
     data: {
       type:String,
-      required:true
     }
   }
 })
