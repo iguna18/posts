@@ -199,6 +199,39 @@ blogsRouter.post('/:blogid/comments/:commentid/like', middleware.userExtractor, 
   }
 })
 
+//for comment likers popup on frontend
+blogsRouter.get('/:blogid/comments/:commentid/likers', async (request, response) => {
+  const blogid = request.params.blogid
+  const commentid = request.params.commentid
+  const blog = await Blog.findById(blogid)
+  if(!blog) {
+    return response.status(404).end()
+  }
+  const commentIndex = blog.comments.findIndex(c => c.id == commentid)
+  if(commentIndex == -1) {
+    return response.status(404).end()
+  }
+  const b = await blog.populate({
+    path:`comments.${commentIndex}.likers`,
+    select:'username firstname lastname'
+  })
+  return response.json(b.comments[commentIndex].likers)
+})
+
+//for blog likers popup on frontend
+blogsRouter.get('/:blogid/likers', async (request, response) => {
+  const blogid = request.params.blogid
+  const blog = await Blog.findById(blogid)
+  if(!blog) {
+    return response.status(404).end()
+  }
+  const b = await blog.populate({
+    path:'likers',
+    select:'username firstname lastname'
+  })
+  return response.json(b.likers)
+})
+
 //replace the blog
 blogsRouter.put('/:id', middleware.userExtractor, async (request, response, next) => {
   const blogFromClient = request.body

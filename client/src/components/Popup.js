@@ -3,12 +3,15 @@ import { Alert } from 'react-bootstrap'
 import {setMessage} from '../reducers/messageSlice';
 import '../styles/Popup.css'
 import _enum from './enum';
-import {BlogPopup, AddBlogPopup} from './PopupContents'
+import {BlogPopup, AddBlogPopup, UserListPopup} from './PopupContents'
+import { setpopupContentN } from '../reducers/popupSlice';
 
 const handleClose = (dispatch) => (e) => {
   dispatch(setMessage(null))
 }
-
+const handleClose2 = (dispatch) => (e) => {
+  dispatch(setpopupContentN(_enum.NO_POPUP))
+}
 const Popup = () => {
   const dispatch = useDispatch()
   let message = useSelector(state => state.message)
@@ -32,12 +35,13 @@ const Popup = () => {
   let PopupContent = null
   switch (popupContentN) {
     case _enum.ADD_BLOG_POPUP: 
-      console.log('abp')
       PopupContent = AddBlogPopup
       break;
     case _enum.BLOG_POPUP:
-      console.log('bp')
       PopupContent = BlogPopup
+      break;
+    case _enum.USER_LIST_POPUP:
+      PopupContent = UserListPopup
       break;
     default:
       break;
@@ -46,6 +50,9 @@ const Popup = () => {
   return (
     <div className='overlay'>
       <div>
+        <div className='x'>
+          <span onClick={handleClose2(dispatch)}>X</span>  
+        </div>
         <PopupContent {...popupProps}/>
       </div>
     </div>

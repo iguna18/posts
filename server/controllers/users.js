@@ -14,6 +14,38 @@ usersRouter.patch('/:id', async (req, res) => {
   }
 })
 
+// //add image to user 
+// usersRouter.post('/:id/image', upload.single('image'), async (request, response) => {
+//   const user = await User.findById(request.params.id)
+//   if(!blog) {
+//     return response.status(404).end()
+//   }
+
+//   if (blog.user_id.toString() != request.user_id.toString()) {
+//     return response.status(401).send({error:"unauthorized, only the author can add images to the blog"})
+//   }
+//   if(!blog.imageinfos)
+//     blog.imageinfos = []
+  
+//   console.log('request.files',request.files);
+//   console.log('request.body',request.body);
+
+//   for(let i=0; i<request.files.length; i++) {
+//     blog.imageinfos.push({
+//       mimetype:request.files[i].mimetype,
+//       originalname:request.files[i].originalname,
+//       data:request.files[i].buffer.toString('base64')
+//     })
+//   }
+//   try{
+//     await blog.save()
+//     response.status(201).send(await blog.populate('user_id'))
+//   } catch (error){
+//     console.log(error)
+//     response.status(500).end()
+//   }
+// })
+
 usersRouter.get('/:id', async (req, res) => {
   const user = await User.findById(req.params.id)
   if (user) {

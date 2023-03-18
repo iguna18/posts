@@ -30,7 +30,35 @@ const userSchema = new mongoose.Schema({
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User'
     }
-  ]
+  ],
+  imageinfo: {
+    mimetype: {
+      type:String,
+      required:true
+    },
+    originalname: {
+      type:String,
+      required:true
+    },
+    data: {
+      type:String,
+      required:true
+    }
+  },
+  littleimageinfo: {
+    mimetype: {
+      type:String,
+      required:true
+    },
+    originalname: {
+      type:String,
+      required:true
+    },
+    data: {
+      type:String,
+      required:true
+    }
+  }
 })
 
 userSchema.set('toJSON', {

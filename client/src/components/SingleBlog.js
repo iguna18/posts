@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { updateBlog } from "../reducers/blogsSlice";
+import { setpopupContentN, setPopupProps } from "../reducers/popupSlice";
+import _enum from "./enum";
 
 const Undercomment = styled.div`
   display:flex;
@@ -16,10 +18,15 @@ const Undercomment = styled.div`
     cursor: pointer;
   }
 `
+const onClickLikes = (dispatch, likers_ids) => () => {
+  dispatch(setpopupContentN(_enum.USER_LIST_POPUP))    
+  dispatch(setPopupProps({userList:likers_ids}))
+}
+
 //in react i have Blog component which renders 5 Comment component. Comment component is recursive, it may on its own render other comment components inside itself. Let's take a certain Comment component rendered by Blog. It also has a button which when clicked should increase a number state stored in redux. This number state determines how many Comment components should our chosen Comment component render. Problem is, though the button click correctly  increases the number state in redux, the number of our chosen Comment's rendered Comment components doesn't change.
 
 const Comment = ({comment, loggedUserId, blog, dispatch, addComment}) => {
-  const onClickLikes = () => {}
+
   const [replyInputVisible, setReplyInputVisible] = useState(false)
   const blogid = blog.id
   const userLikesComment = comment.likers.find(uid => uid == loggedUserId)
@@ -38,7 +45,7 @@ const Comment = ({comment, loggedUserId, blog, dispatch, addComment}) => {
             dispatch(toggleCommentLike(blogid, comment.id, loggedUserId))}>
             { userLikesComment ? 'unlike' : 'like' } 
           </span>
-          <span onClick={onClickLikes}>{likesNumber} likes</span>
+          <span onClick={onClickLikes(dispatch, comment.likers)}>{likesNumber} likes</span>
           <span>{new Date(comment.creationDate).toLocaleString('en-UK')}</span>
         </Undercomment>
       </div>
