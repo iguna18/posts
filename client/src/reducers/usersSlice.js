@@ -15,6 +15,10 @@ const usersSlice = createSlice({
       state[userIndex][field] = value
       return
     },
+    updateUser: (state, action) => {
+      const data = action.payload
+      return state.map(u => u.id === data.id ? data : u)
+    },
     addBlogToUser: (state, action) => {
       const {newBlog} = action.payload
       const userIndex = state.findIndex(e =>  {
@@ -50,6 +54,6 @@ const usersSlice = createSlice({
   }
 })
 
-export const { setUsers, setUserField, addBlogToUser, addFollow, removeFollow } = usersSlice.actions
+export const { setUsers, setUserField, addBlogToUser, addFollow, removeFollow, updateUser } = usersSlice.actions
 
 export default usersSlice.reducer

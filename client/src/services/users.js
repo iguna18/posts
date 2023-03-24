@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { token } from './blogs'
 const baseUrl = 'http://localhost:3005/api/users'
 // const baseUrl = '/api/users'
 
@@ -52,4 +53,19 @@ const getFollowings = (blogid) => {
       .then(response => response.data)
   )
 }
-export default { getAll, addUser, addFollow, removeFollow, getFollowers, getFollowings }
+
+const uploadPfp = (userid, formdataWithFile) => {
+  const config = {
+    headers: { 
+      Authorization:token,
+      'Content-Type': 'multipart/form-data'
+    }
+  }
+  return (
+    axios
+      .post(`${baseUrl}/${userid}/pfp/`, formdataWithFile, config)
+      .then(response => response.data)
+  )
+}
+
+export default { getAll, addUser, addFollow, removeFollow, getFollowers, getFollowings, uploadPfp }

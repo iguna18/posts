@@ -9,3 +9,47 @@
 .p {
   padding: 0px 30px;
 }
+
+.pfp {
+  border: 5px solid red;
+  width: 250px;
+  height: 250px;
+}
+
+.over {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.over:hover {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(360, 360, 360, 0.5);
+}
+
+#pfpinput {
+  display:none;
+}
+
+#pfpinputlabel {
+  cursor: pointer;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  color: rgba(360, 360, 360, 0);
+  /* background-color: yellow; */
+}
+
+#pfpinputlabel:hover {
+  color: rgba(360, 360, 360, 1);
+  background-color: rgba(360, 360, 360, 0.5);
+}

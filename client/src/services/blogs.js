@@ -2,7 +2,7 @@ import axios from 'axios'
 // const baseUrl = '/api/blogs'
 const baseUrl = 'http://localhost:3005/api/blogs'
 
-let token = null
+export let token = null
 
 const setToken = newToken => {
   token = `bearer ${ newToken }`

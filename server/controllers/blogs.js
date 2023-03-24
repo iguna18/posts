@@ -2,7 +2,6 @@ const middleware = require('../utils/middleware')
 const Blog = require('../models/blog')
 const User = require('../models/user')
 const multer = require('multer')
-const fs = require('fs')
 
 const fileStorageEngine = multer.memoryStorage()
 

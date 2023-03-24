@@ -1,6 +1,18 @@
+const middleware = require('../utils/middleware')
 const bcrypt = require('bcrypt')
 const User = require('../models/user')
 const usersRouter = require('express').Router()
+const multer = require('multer')
+const sharp = require('sharp')
+
+const fileStorageEngine = multer.memoryStorage()
+
+const upload = multer({ 
+  storage: fileStorageEngine,
+  limits: {
+    fileSize: 10 * 1024 * 1024, // 10 megabytes
+  }
+})
 
 usersRouter.patch('/:id', async (req, res) => {
   const user = await User.findById(req.params.id)
@@ -14,37 +26,44 @@ usersRouter.patch('/:id', async (req, res) => {
   }
 })
 
-// //add image to user 
-// usersRouter.post('/:id/image', upload.single('image'), async (request, response) => {
-//   const user = await User.findById(request.params.id)
-//   if(!blog) {
-//     return response.status(404).end()
-//   }
+//add pfp to user 
+usersRouter.post('/:id/pfp', upload.single('pfp'), middleware.userExtractor, async (request, response) => {
+  if(request.params.id.toString() != request.user_id.toString()) {
+    return response.status(401).send({error:'an user\'s pfp can be update only by themselves'})
+  }
 
-//   if (blog.user_id.toString() != request.user_id.toString()) {
-//     return response.status(401).send({error:"unauthorized, only the author can add images to the blog"})
-//   }
-//   if(!blog.imageinfos)
-//     blog.imageinfos = []
-  
-//   console.log('request.files',request.files);
-//   console.log('request.body',request.body);
-
-//   for(let i=0; i<request.files.length; i++) {
-//     blog.imageinfos.push({
-//       mimetype:request.files[i].mimetype,
-//       originalname:request.files[i].originalname,
-//       data:request.files[i].buffer.toString('base64')
-//     })
-//   }
-//   try{
-//     await blog.save()
-//     response.status(201).send(await blog.populate('user_id'))
-//   } catch (error){
-//     console.log(error)
-//     response.status(500).end()
-//   }
-// })
+  const user = await User.findById(request.params.id)
+  if(!user) {
+    return response.status(404).end()
+  }
+  user.imageinfo = {
+    mimetype:request.file.mimetype,
+    originalname:request.file.originalname,
+    data:request.file.buffer.toString('base64')
+  }
+  let resizedImageBuffer = null
+  try{
+    resizedImageBuffer = await sharp(request.file.buffer)
+    .resize(80, 80)
+    .jpeg({ quality: 90 })
+    .toBuffer()
+  } catch(error) {
+    console.log('egi',error);
+    return response.status(500).json({error})
+  }
+  user.littleimageinfo = {
+    mimetype:'image/jpeg',
+    originalname:`${request.file.originalname}_small`,
+    data:resizedImageBuffer.toString('base64')
+  }
+  try{
+    await user.save()
+    response.status(201).json(user)
+  } catch (error){
+    console.log(error)
+    response.status(500).end()
+  }
+})
 
 //for followers popup on frontend
 usersRouter.get('/:id/follower_ids', async (request, response) => {

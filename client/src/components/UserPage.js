@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import Popup from './Popup'
 import { useSelector, useDispatch } from 'react-redux'
-import {toggleBlogLike, setNotification, deleteBlog,initializeBlogs, initializeUsers, newComment} from '../reducers/thunks'
+import { initializeBlogs, initializeUsers, newComment} from '../reducers/thunks'
 import { setUser } from '../reducers/userSlice'
 import {
   Routes, Route, Link, useMatch 
@@ -11,12 +11,8 @@ import { BlogsView } from './BlogsView'
 import { SingleBlog } from './SingleBlog'
 import { SingleUser } from './SingleUser'
 import styled from 'styled-components'
+import '../styles/UserPage.css'
 
-const Navigation = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-`
 const Div = styled.div`
   /* row-gap:0px;
   display: flex;
@@ -63,7 +59,7 @@ const UserPage = () => {
   return (
     <Div>
       <Popup/>
-      <Navigation>
+      <div className='n'>
         <div>
           <Link style={{marginRight:'5px'}} to='/blogs'>blogs</Link>
           <Link to='/users'>users </Link> 
@@ -73,13 +69,12 @@ const UserPage = () => {
           <img src='/logo192.png' style={{height:'10%'}}/>
           <button onClick = {onLogOut}>log out</button>        
         </div>
-      </Navigation>
+      </div>
       <Routes>
         <Route path='/blogs' element={ // blogs view
-        <BlogsView blogs={blogs} user = {user}
+        <BlogsView blogs={blogs} user={user}
           addComment={addComment}
-          loggedUserId={loggedUserId}
-          />
+          loggedUserId={loggedUserId}/>
         } />
         <Route path='/users' element={ // users view
           <UsersView users={users}/>

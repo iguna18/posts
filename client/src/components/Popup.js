@@ -5,6 +5,7 @@ import '../styles/Popup.css'
 import _enum from './enum';
 import {BlogPopup, AddBlogPopup, UserListPopup} from './PopupContents'
 import { setpopupContentN } from '../reducers/popupSlice';
+import '../styles/lds-spinner.css'
 
 const handleClose = (dispatch) => (e) => {
   dispatch(setMessage(null))
@@ -17,11 +18,16 @@ const Popup = () => {
   let message = useSelector(state => state.message)
   let popupContentN = useSelector(state => state.popup.popupContentN)
   let popupProps = useSelector(state => state.popup.popupProps)
+  // if(message == 'WAIT') {
+  //   return (<div>ASAS</div>
+  //     )
+  // }
+
   if(message) {
     return (
       <div className='overlay'>
         <Alert variant="success">
-          {message}
+          {message=='WAIT'?<img src='/tail-spin.svg'/>:message}
           <button onClick={handleClose(dispatch)}>
             close
           </button>

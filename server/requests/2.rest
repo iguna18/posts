@@ -3,8 +3,8 @@ POST http://localhost:3005/api/login/
 content-type: application/json
 
 {
-   "username":"vaso",
-   "password":"vaso"
+   "username":"soso",
+   "password":"soso"
 }
 ###
 GET http://localhost:3005/api/blogs/

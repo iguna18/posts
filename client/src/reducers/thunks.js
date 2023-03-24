@@ -1,9 +1,11 @@
 import { addBlog, setBlogs, updateBlog } from "./blogsSlice"
-import { addBlogToUser, addFollow, removeFollow, setUserField, setUsers } from "./usersSlice"
+import { addBlogToUser, addFollow, removeFollow, setUserField, setUsers, updateUser } from "./usersSlice"
 import { setMessage } from "./messageSlice"
 import blogsService from "../services/blogs"
 import usersService from "../services/users"
 import {cloneDeep} from 'lodash' 
+import { setpopupContentN } from "./popupSlice"
+import _enum from "../components/enum"
 
 export const setNotification = (text, noTimeout) => (dispatch) => {
     dispatch(setMessage(text))
@@ -18,11 +20,11 @@ export const createBlog = (blog, formdataWithFiles) => async (dispatch) => {
   dispatch(setNotification('WAIT'), true)
   try {
     let newBlog = await blogsService.create(blog)
-
     newBlog = await blogsService.addFiles(newBlog.id, formdataWithFiles)
     dispatch(addBlog(newBlog))
     dispatch(addBlogToUser({newBlog}))
     dispatch(setNotification('New post added'))
+    dispatch(setpopupContentN(_enum.NO_POPUP))
   } catch (error) {
     console.log(error);
     dispatch(setNotification(error.message))
@@ -51,7 +53,6 @@ export const toggleBlogLike = (blogid) => async (dispatch, getState) => {
     dispatch(setNotification(error.message)) 
   }
 }
-
 
 export const initializeBlogs = () => async (dispatch) => {
   dispatch(setNotification('WAIT'), true)
@@ -148,3 +149,16 @@ export const toggleFollow = (fromid, toid, followState) =>  async (dispatch, get
     dispatch(setNotification(error.message))
   }
 }
+
+export const uploadPfp = (userid, formdataWithFile) => async (dispatch, getState) => {
+  dispatch(setNotification('WAIT'), true)
+  try {
+    const updatedUser = await usersService.uploadPfp(userid, formdataWithFile)
+    dispatch(updateUser(updatedUser))
+    dispatch(setNotification(`updated pfp for user ${userid}`))
+  } catch (error) {
+    console.log(error)
+    dispatch(setNotification(error.message))
+  }
+}
+

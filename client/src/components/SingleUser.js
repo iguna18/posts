@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux"
-import { setNotification, toggleFollow } from "../reducers/thunks"
+import { setNotification, toggleFollow, uploadPfp } from "../reducers/thunks"
 import { addFollow, removeFollow } from "../reducers/usersSlice"
 import usersService from '../services/users'
 import Blog from "./Blog"
@@ -27,6 +27,11 @@ const onClickFollowings = (dispatch, userid) => async () => {
   }
 }
 
+const onFileChange = (dispatch, userid) => (event) => {
+  const formData = new FormData();
+  formData.append('pfp', event.target.files[0]);
+  dispatch(uploadPfp(userid, formData))
+}
 
 export const SingleUser = ({userToShow, loggedUserId}) => {
   const dispatch = useDispatch()
@@ -37,15 +42,13 @@ export const SingleUser = ({userToShow, loggedUserId}) => {
     )
   })
 
-  if(!userToShow)
-    return (
-      <div></div>
-    )
-
   console.log(userToShow.firstname, userToShow.lastname );
   const name = userToShow.firstname.charAt(0).toUpperCase()+userToShow.firstname.slice(1)
     +' '+userToShow.lastname.charAt(0).toUpperCase()+userToShow.lastname.slice(1)
   console.log(name);
+  const pfpSrc = userToShow.imageinfo ?
+    `data:${userToShow.imageinfo.mimetype};base64,${userToShow.imageinfo.data}`
+    : '/logo192.png'
   return (
     <div>
       <div style={{
@@ -53,6 +56,12 @@ export const SingleUser = ({userToShow, loggedUserId}) => {
         flexDirection:'row'
       }}>
         <div className='p'>
+        <div style={{ position:'relative' }} className=''>
+          <input type='file' id='pfpinput' accept="image/png, image/jpeg" 
+            maxlength="10000000" onChange={onFileChange(dispatch, userToShow.id)} />
+          <label htmlFor='pfpinput' id='pfpinputlabel'>Upload a pfp (only png and jpg files smaller than 10mb)</label>
+          <img className='pfp' src={pfpSrc}/>
+        </div>
         <h3>{name}</h3>
         <div>@{userToShow.username}</div>
         <div className='f'>
