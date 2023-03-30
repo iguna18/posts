@@ -1,0 +1,38 @@
+.blogdiv {
+  width: 300px;
+  height: 200px;
+  border-radius: 20px;
+  border: thick double gray;
+}
+
+.textandimage {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.imagesection {
+  position:relative;
+  max-width: 300px;
+  max-height: 200px;
+}
+
+.imagesection img {
+  height:100px;
+  max-width: 100%;
+  /* border-radius: ; */
+}
+
+.imagesectionoverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(360, 360, 360, 0.5);
+}
+
+.nodisplay {
+  display: none
+}

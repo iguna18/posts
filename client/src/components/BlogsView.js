@@ -6,6 +6,7 @@ import Blog from "./Blog"
 import CreateNewBlog from "./CreateNewBlog"
 import Togglable from "./Togglable"
 import { useNavigate } from 'react-router-dom'
+import '../styles/BlogsView.css'
 
 const onClickNewBlog = (dispatch) => () => {
   dispatch(setpopupContentN(_enum.ADD_BLOG_POPUP))
@@ -39,7 +40,7 @@ export const BlogsView = ({blogs, removeBlog, user, addComment, loggedUserId}) =
       {/* <div style={{
         display:'grid'
       }}> */}
-      <Grid container>
+      <div className='ulist'>
         {
           blogs
             .filter(b => b.user_id.follower_ids.find(fid => fid == userid))
@@ -54,7 +55,7 @@ export const BlogsView = ({blogs, removeBlog, user, addComment, loggedUserId}) =
             })
         }
       {/* </div> */}
-      </Grid>
+      </div>
     </div>
   )
 }
