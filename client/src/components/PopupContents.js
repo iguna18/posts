@@ -3,6 +3,8 @@ import { SingleBlog } from './SingleBlog'
 import { addComment } from './UserPage'
 import '../styles/PopupContent.css'
 import CreateNewBlog from './CreateNewBlog'
+import { GoTriangleLeft, GoTriangleRight } from "react-icons/go"
+import { useSelector } from 'react-redux'
 
 //cancel this
 export const BlogPopup = (props) => {
@@ -40,6 +42,20 @@ export const UserListPopup = (props) => {
           </div>
         )
       })}
+    </div>
+  )
+}
+
+export const ImagePopup = (props) => {
+  console.log(props)
+  const imageinfos = useSelector(state => state.blogs[props.blogindex].imageinfos)
+  return (
+    <div className='ipdiv'>
+      <div className='arrowdiv'><GoTriangleLeft/></div>
+      <div>
+
+      </div>
+      <div className='arrowdiv'><GoTriangleRight/></div>
     </div>
   )
 }
