@@ -16,3 +16,20 @@
 .unamesdiv {
   flex:5
 }
+
+.ipdiv {
+  display: flex;
+  flex-direction: row;
+}
+
+.imgindex {
+  text-align: center;
+}
+
+.tri {
+  cursor: pointer;
+}
+
+.inv {
+  opacity: 0;
+}

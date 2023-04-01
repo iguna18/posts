@@ -3,7 +3,7 @@ import { Alert } from 'react-bootstrap'
 import {setMessage} from '../reducers/messageSlice';
 import '../styles/Popup.css'
 import _enum from './enum';
-import {BlogPopup, AddBlogPopup, UserListPopup} from './PopupContents'
+import {BlogPopup, AddBlogPopup, UserListPopup, ImagePopup} from './PopupContents'
 import { setpopupContentN } from '../reducers/popupSlice';
 import '../styles/lds-spinner.css'
 
@@ -49,6 +49,8 @@ const Popup = () => {
     case _enum.USER_LIST_POPUP:
       PopupContent = UserListPopup
       break;
+    case _enum.IMAGE_POPUP:
+      PopupContent = ImagePopup
     default:
       break;
   }

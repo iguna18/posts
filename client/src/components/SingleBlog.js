@@ -91,6 +91,11 @@ const Comment = ({comment, loggedUserId, blog, dispatch, addComment}) => {
   )
 }
 
+const onClickImg = (dispatch, blogid) => async () => {
+    dispatch(setpopupContentN(_enum.IMAGE_POPUP))
+    dispatch(setPopupProps({blogid}))
+}
+
 export const SingleBlog = ({blogToShow, addComment, loggedUserId}) => {
   const dispatch = useDispatch()
   if(!blogToShow)
@@ -109,7 +114,8 @@ export const SingleBlog = ({blogToShow, addComment, loggedUserId}) => {
           blogToShow.imageinfos.map((file, i) => {
             return (
               <div key={i}>
-                <img src={`data:${file.mimetype};base64,${file.data}`}/>
+                <img src={`data:${file.mimetype};base64,${file.data}`} 
+                  onClick={onClickImg(dispatch, blogToShow.id)}/>
                 <span>{file.originalname+file.mimetype}</span>
               </div>
             )

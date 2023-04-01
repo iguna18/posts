@@ -5,6 +5,7 @@ import '../styles/PopupContent.css'
 import CreateNewBlog from './CreateNewBlog'
 import { GoTriangleLeft, GoTriangleRight } from "react-icons/go"
 import { useSelector } from 'react-redux'
+import { useState } from 'react'
 
 //cancel this
 export const BlogPopup = (props) => {
@@ -47,15 +48,39 @@ export const UserListPopup = (props) => {
 }
 
 export const ImagePopup = (props) => {
+  const [currentImageIndex, setCurrentImageIndex] = useState(0)
   console.log(props)
-  const imageinfos = useSelector(state => state.blogs[props.blogindex].imageinfos)
+  const imageinfos = useSelector(state => 
+    state.blogs.find(b => b.id == props.blogid).imageinfos)
+  console.log(imageinfos.length);
+  
   return (
+    <div className='outdiv'>
     <div className='ipdiv'>
-      <div className='arrowdiv'><GoTriangleLeft/></div>
-      <div>
-
+      <div onClick={()=>{
+        if(currentImageIndex == 0) {
+          return
+        }
+        setCurrentImageIndex(currentImageIndex -1)}
+      }>
+        <GoTriangleLeft className={currentImageIndex==0?'inv':'tri'}/>
       </div>
-      <div className='arrowdiv'><GoTriangleRight/></div>
+      <div>
+      <img src={`data:${imageinfos[currentImageIndex].mimetype};base64,${imageinfos[currentImageIndex].data}`} 
+        alt={imageinfos[currentImageIndex].originalname}/>
+      </div>
+      <div onClick={()=>{
+        if(currentImageIndex == imageinfos.length-1) {
+          return
+        }
+        setCurrentImageIndex(currentImageIndex+1)
+      }}>
+        <GoTriangleRight className={currentImageIndex==imageinfos.length-1?'inv':'tri'}/>
+      </div>
+    </div>
+    <div className='imgindex'>
+      {currentImageIndex + 1}/{imageinfos.length}
+    </div>
     </div>
   )
 }
