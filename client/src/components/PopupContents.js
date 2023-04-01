@@ -5,7 +5,7 @@ import '../styles/PopupContent.css'
 import CreateNewBlog from './CreateNewBlog'
 import { GoTriangleLeft, GoTriangleRight } from "react-icons/go"
 import { useSelector } from 'react-redux'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 //cancel this
 export const BlogPopup = (props) => {
@@ -49,32 +49,51 @@ export const UserListPopup = (props) => {
 
 export const ImagePopup = (props) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
-  console.log(props)
+
+  const prevImg = ()=>{
+    if(currentImageIndex == 0) {
+      return
+    }
+    setCurrentImageIndex(currentImageIndex-1)
+  }
+  const nextImg = ()=>{
+    if(currentImageIndex == imageinfos.length-1) {
+      return
+    }
+    setCurrentImageIndex(currentImageIndex+1)
+  }
+
+  useEffect(() => {
+    const handleArrows = (event) => {
+      if (event.key === 'ArrowLeft') {
+        console.log('left')
+        prevImg()
+      } else if (event.key === 'ArrowRight') {
+        console.log('right')
+        nextImg()
+      }
+    }
+    
+    document.addEventListener('keydown', handleArrows)
+    return () => {
+      document.removeEventListener('keydown', handleArrows)
+    };
+  }, []);
+
   const imageinfos = useSelector(state => 
     state.blogs.find(b => b.id == props.blogid).imageinfos)
-  console.log(imageinfos.length);
   
   return (
     <div className='outdiv'>
     <div className='ipdiv'>
-      <div onClick={()=>{
-        if(currentImageIndex == 0) {
-          return
-        }
-        setCurrentImageIndex(currentImageIndex -1)}
-      }>
+      <div onClick={prevImg}>
         <GoTriangleLeft className={currentImageIndex==0?'inv':'tri'}/>
       </div>
       <div>
       <img src={`data:${imageinfos[currentImageIndex].mimetype};base64,${imageinfos[currentImageIndex].data}`} 
         alt={imageinfos[currentImageIndex].originalname}/>
       </div>
-      <div onClick={()=>{
-        if(currentImageIndex == imageinfos.length-1) {
-          return
-        }
-        setCurrentImageIndex(currentImageIndex+1)
-      }}>
+      <div onClick={nextImg}>
         <GoTriangleRight className={currentImageIndex==imageinfos.length-1?'inv':'tri'}/>
       </div>
     </div>

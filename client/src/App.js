@@ -5,6 +5,8 @@ import LoginPage from './components/LoginPage'
 import { useSelector, useDispatch } from 'react-redux'
 import { setUser } from './reducers/userSlice'
 import { Container } from '@mui/system'
+import { setpopupContentN } from './reducers/popupSlice'
+import _enum from './components/enum'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -19,6 +21,19 @@ const App = () => {
       blogService.setToken(localStorageUser.token)
     }
   }, [])
+
+  useEffect(() => {
+    const handleEscapeKey = (event) => {
+      if (event.key === 'Escape') {
+        dispatch(setpopupContentN(_enum.NO_POPUP))
+      }
+    };
+    
+    document.addEventListener('keydown', handleEscapeKey)
+    return () => {
+      document.removeEventListener('keydown', handleEscapeKey)
+    };
+  }, []);
 
   const style = {
     width: '100%',
