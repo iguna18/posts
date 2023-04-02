@@ -1,3 +1,4 @@
+import React from 'react'
 const MyInput = ({ value, setValue }) => (
   <input value={ value } onChange={ e => setValue(e.target.value) }></input>
 )

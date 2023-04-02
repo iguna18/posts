@@ -1,4 +1,4 @@
-import { Grid } from "@mui/material"
+import React from 'react'
 import { useSelector, useDispatch } from "react-redux"
 import _enum from "./enum"
 import { setpopupContentN, setPopupProps } from "../reducers/popupSlice"
@@ -22,7 +22,7 @@ export const BlogsView = ({blogs, removeBlog, user, addComment, loggedUserId}) =
     useSelector(state => state.users.find(u => u.username == user.username))  
   const userid = us.id
 
-  console.log(blogs[blogs.length-1].user_id.follower_ids)
+  // console.log(blogs[blogs.length-1].user_id.follower_ids)
   // console.log(          blogs
   //   .filter(b => b.user_id.follower_ids.find(fid => fid == userid))
   //   .sort((a, b) => b.likes - a.likes));

@@ -1,3 +1,4 @@
+import React from 'react'
 import { useDispatch, useSelector } from "react-redux"
 import { setNotification, toggleFollow, uploadPfp } from "../reducers/thunks"
 import { addFollow, removeFollow } from "../reducers/usersSlice"

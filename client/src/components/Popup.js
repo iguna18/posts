@@ -1,5 +1,5 @@
+import React, { useEffect } from 'react'
 import {useDispatch, useSelector} from 'react-redux'
-import { Alert } from 'react-bootstrap'
 import {setMessage} from '../reducers/messageSlice';
 import '../styles/Popup.css'
 import _enum from './enum';
@@ -23,15 +23,29 @@ const Popup = () => {
   //     )
   // }
 
+  useEffect(() => {
+    const handleBackButton = () => {
+      console.log('cakbutt cliked');
+      dispatch(setpopupContentN(_enum.NO_POPUP))
+      
+    }
+
+    window.addEventListener('popstate', handleBackButton);
+
+    return () => {
+      window.removeEventListener('popstate', handleBackButton);
+    }
+  }, [])
+
   if(message) {
     return (
       <div className='overlay'>
-        <Alert variant="success">
+        <div className='mes'>
           {message=='WAIT'?<img src='/tail-spin.svg'/>:message}
           <button onClick={handleClose(dispatch)}>
             close
           </button>
-        </Alert>
+        </div>
       </div>
     )
   }

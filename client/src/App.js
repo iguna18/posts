@@ -4,9 +4,9 @@ import UserPage from './components/UserPage'
 import LoginPage from './components/LoginPage'
 import { useSelector, useDispatch } from 'react-redux'
 import { setUser } from './reducers/userSlice'
-import { Container } from '@mui/system'
 import { setpopupContentN } from './reducers/popupSlice'
 import _enum from './components/enum'
+import React from 'react'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -27,13 +27,14 @@ const App = () => {
       if (event.key === 'Escape') {
         dispatch(setpopupContentN(_enum.NO_POPUP))
       }
-    };
+    }
     
     document.addEventListener('keydown', handleEscapeKey)
     return () => {
       document.removeEventListener('keydown', handleEscapeKey)
-    };
-  }, []);
+    }
+  }, [])
+
 
   const style = {
     width: '100%',
@@ -43,12 +44,10 @@ const App = () => {
   }
 
   return (
-    // <div style={style}>
-    <Container fixed>
+    <div style={style}>
       {user != null ? <UserPage/> : <LoginPage/>}
 
-    </Container>
-    // </div>
+    </div>
   )
 }
 
