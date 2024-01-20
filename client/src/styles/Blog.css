@@ -1,8 +1,11 @@
-.blogdiv {
-  width: 300px;
-  height: 200px;
+  .blogdiv {
+  min-width: 300px;
+  width: 100%;
+  max-height: 200px;
   border-radius: 20px;
-  border: thick double gray;
+  border: thick double;
+  align-items: center;
+  justify-content: center;
 }
 
 .textandimage {
@@ -36,4 +39,16 @@
 
 .nodisplay {
   display: none
+}
+
+.underbar {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  /* justify-content: space-between; */
+}
+
+.underbar :hover {
+  text-decoration: underline;
+  cursor: pointer;
 }

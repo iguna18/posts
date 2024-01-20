@@ -58,6 +58,7 @@ export const initializeBlogs = () => async (dispatch) => {
   dispatch(setNotification('WAIT'), true)
   try {
     let blogs = await blogsService.getAll()
+    console.log('zhig', blogs[0]);
     dispatch(setBlogs(blogs))
     dispatch(setNotification(null), true)
   } catch (error) {

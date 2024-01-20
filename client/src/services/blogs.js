@@ -12,7 +12,12 @@ const getAll = async () => {
   return (
     axios
       .get(baseUrl)
-      .then(response => response.data)
+      .then(response => {
+        console.log('rume');
+        return response.data
+      }).catch(err => {
+        console.log('dzma', err.message);
+      })
   )
 }
 

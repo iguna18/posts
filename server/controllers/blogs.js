@@ -17,8 +17,25 @@ const blogsRouter = require('express').Router()
 //get every blog
 blogsRouter.get('/', async (request, response) => {
   const blogs = await Blog.find({}).populate('user_id')
-  response.json(blogs)
+  console.log(blogs.length)
+  const b2 = blogs.slice(1, 5)
+  console.log(b2.length);
+  response.json(b2)
 })
+
+//get every blog user follows
+// blogsRouter.get('/', async (request, response) => {
+//   const blogs = await Blog.find({})
+//   response.json(blogs)
+// })
+
+app.get("/getten", (req, res) => {
+  // const offset = parseInt(req.query.offset);
+  // const limit = 10;
+  // const result = items.slice(offset, offset + limit);
+  // res.json(result);
+  
+});
 
 //add a new blog
 blogsRouter.post('/', middleware.userExtractor, async (request, response) => {
